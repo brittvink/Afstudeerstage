@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content%}
+<center>
+<h1> All titles are listed here </h1>
+    {% for item in title_list %}
+        {{item.title}} <br/>
+    {% endfor %}
+</center>
+{% endblock %}}
