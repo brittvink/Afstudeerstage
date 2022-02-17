@@ -43,8 +43,10 @@ class main():
 
     def start(self):
 
-        # Try to make a connection with the database
+        # Read input file
+        df = pd.read_csv(self.input_file)
 
+        # Try to make a connection with the database
         try:
             with connect(
                     host="localhost",
@@ -53,9 +55,6 @@ class main():
                     database="online_movie_rating",
             ) as connection:
                 print(connection)
-
-                # Read input file
-                df = pd.read_csv(self.input_file)
 
                 # create_information_table_query = """
                 # DROP TABLE information
