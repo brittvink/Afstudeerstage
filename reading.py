@@ -18,7 +18,7 @@ class main():
         # Get the command line arguments.
         arguments = self.create_argument_parser()
         self.input_file = getattr(arguments, 'input')
-
+        self.output_file = getattr(arguments, 'output')
 
     @staticmethod
     def create_argument_parser():
@@ -38,6 +38,12 @@ class main():
                             type=str,
                             required=True,
                             help="The path to the input file.")
+
+        parser.add_argument("-o",
+                            "--output",
+                            type=str,
+                            required=True,
+                            help="the name of the output file")
 
         return parser.parse_args()
 
@@ -62,16 +68,23 @@ class main():
                 entry = NewsFeed.entries[i]
 
                 # Get ID
-                split_url = entry.id.split("/")
-                last = split_url[-1]
-                id = last.split('.')
+                id = entry.id + entry.title[:30]
+                id = id.replace(' ', '_')
+
+                # Make sure all ID's have the same length
+                if (len(id)) < 92:
+                    difference = 92 - len(id)
+                    string_to_add = ""
+                    for x in range(difference):
+                        string_to_add += "_"
+                    id += string_to_add
 
                 # Add post to list "posts"
-                posts.append((entry.title, entry.link, entry.summary, entry.published, id[0]))
+                posts.append((entry.title, entry.link, entry.summary, entry.published, id))
 
         # Add posts to dataframe
         df = pd.DataFrame(posts, columns=['title', 'link', 'summary', 'published', 'id'])
-        df.to_csv('out.txt', index=False)
+        df.to_csv(self.output_file, index=False)
 
     def print_arguments(self):
         print("Arguments:")

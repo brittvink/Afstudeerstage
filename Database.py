@@ -52,7 +52,7 @@ class main():
                     host="localhost",
                     user=input("Enter username: "),
                     password=getpass("Enter password: "),
-                    database="online_movie_rating",
+                    database="KCBBE2",
             ) as connection:
                 print(connection)
 
@@ -65,7 +65,7 @@ class main():
 
                 # Query to create table
                 create_information_table_query = """
-                    CREATE TABLE IF NOT EXISTS information(
+                    CREATE TABLE IF NOT EXISTS database_Information(
                     title VARCHAR(500),
                     link VARCHAR (100),
                     summary VARCHAR(1000),
@@ -88,14 +88,14 @@ class main():
 
                 # Insert DataFrame records one by one if they are not in the database present yet.
                 for i, row in df.iterrows():
-                    sql = "INSERT INTO `information` (`" + cols + "`) VALUES (" + "%s," * (len(row) - 1) + "%s) ON DUPLICATE KEY UPDATE id=id"
+                    sql = "INSERT INTO `database_Information` (`" + cols + "`) VALUES (" + "%s," * (len(row) - 1) + "%s) ON DUPLICATE KEY UPDATE id=id"
                     cursor.execute(sql, tuple(row))
 
                     # the connection is not autocommitted by default, so we must commit to save our changes
                     connection.commit()
 
                 # execute your query
-                cursor.execute("SELECT * FROM information")
+                cursor.execute("SELECT * FROM database_Information")
 
                 # fetch all the matching rows
                 result = cursor.fetchall()
