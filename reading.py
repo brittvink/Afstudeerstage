@@ -70,6 +70,7 @@ class main():
                 # Get ID
                 id = entry.id + entry.title[:30]
                 id = id.replace(' ', '_')
+                id = id.replace('/', '_')
 
                 # Make sure all ID's have the same length
                 if (len(id)) < 92:
