@@ -1,12 +1,25 @@
 #!/usr/bin/env python
+
+"""
+File:         Database.py
+Created:      2022/02/17
+Last Changed: 2022/02/22
+Author:       B.Vink
+
+This pythonscript is used to read a text file and put the data in a MySQL Database
+
+The data is given with the input argument (-i).
+The data is readed and put in the database
+"""
+
+# Third party imports.
 import pandas as pd
 import argparse
 from getpass import getpass
 from mysql.connector import connect, Error
 
-
 # Metadata
-__program__ = "week1"
+__program__ = "fill database"
 __author__ = "Britt Vink"
 __maintainer__ = "Britt Vink"
 __email__ = "b.vink@st.hanze.nl"
@@ -42,7 +55,6 @@ class main():
         return parser.parse_args()
 
     def start(self):
-
         # Read input file
         df = pd.read_csv(self.input_file)
 
@@ -54,16 +66,10 @@ class main():
                     password=getpass("Enter password: "),
                     database="KCBBE2",
             ) as connection:
+                # Print connection
                 print(connection)
 
-                # create_information_table_query = """
-                # DROP TABLE information
-                # """
-                # with connection.cursor() as cursor:
-                #     cursor.execute(create_information_table_query)
-                #     connection.commit()
-
-                # Query to create table
+                # Query to create table if this one doesn't exists yet
                 create_information_table_query = """
                     CREATE TABLE IF NOT EXISTS database_Information(
                     title VARCHAR(500),
@@ -93,17 +99,6 @@ class main():
 
                     # the connection is not autocommitted by default, so we must commit to save our changes
                     connection.commit()
-
-                # execute your query
-                cursor.execute("SELECT * FROM database_Information")
-
-                # fetch all the matching rows
-                result = cursor.fetchall()
-
-                # Loop through the rows
-                for row in result:
-                    print(row)
-                    print("\n")
 
                 # Close connection
                 cursor.close()

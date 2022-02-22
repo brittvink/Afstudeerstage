@@ -1,13 +1,24 @@
 #!/usr/bin/env python
-import pandas as pd
+
+"""
+File:         zoeken.py
+Created:      2022/02/17
+Last Changed: 2022/02/22
+Author:       B.Vink
+
+This pythonscript is used to read a database table and find all results that match input filters
+
+The filters are given with the input argument (-s).
+The database is readed and results are printed in terminal
+"""
+
+# Third party inputs
 import argparse
-import feedparser
 from getpass import getpass
 from mysql.connector import connect, Error
 
-
 # Metadata
-__program__ = "week1"
+__program__ = "search in database"
 __author__ = "Britt Vink"
 __maintainer__ = "Britt Vink"
 __email__ = "b.vink@st.hanze.nl"
@@ -49,6 +60,7 @@ class main():
         # Print arguments
         self.print_arguments()
 
+        # Try to connect with database
         try:
             with connect(
                     host="localhost",
@@ -56,26 +68,31 @@ class main():
                     password=getpass("Enter password: "),
                     database="KCBBE",
             ) as connection:
+                # print connection
                 print(connection)
 
                 cursor = connection.cursor()
 
-                print(self.search_string)
+                # Search for every searched word
                 for word in self.search_string:
-                    print(word)
+                    # Execute search query
                     cursor.execute("SELECT title FROM information where title LIKE '%" + word + "%' OR summary LIKE '%" + word + "%'")
+
+                    # Fetch all results
                     result = cursor.fetchall()
-                    # Loop through the rows
+
+                    # Loop through the results and print them
                     for row in result:
                         print(row)
                         print("\n")
 
         except Error as e:
+            # Show error if connection could not be made
             print(e)
 
     def print_arguments(self):
         print("Arguments:")
-        print("  > search string : {}".format(self.search_string))
+        print("  > Search string : {}".format(self.search_string))
         print("")
 
 if __name__ == '__main__':
