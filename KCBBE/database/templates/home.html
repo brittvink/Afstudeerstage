@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content%}
+<center>
+<h1> Welcome! </h1>
+    Search for articles. If you want to seach for multiple words please seperate them by a space.
+
+    <form method=POST action="{% url 'search-titles' %}">
+        {% csrf_token %}
+        <input type="search" placeholder="Search articles by title" aria-label="Search" name="searched"><br/>
+        <input type="search" placeholder="Search articles by topic in summary" aria-label="Search" name="searched-topic"><br/>
+        <button class="btn btn-outline-secondary" type="submit">Search</button>
+    </form>
+
+</center>
+{% endblock %}}

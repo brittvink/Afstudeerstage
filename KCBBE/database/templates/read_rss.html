@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content%}
+
+<form method=POST action="{% url 'read-rss' %}">
+        {% csrf_token %}
+        <input type="search" placeholder="rss to read" aria-label="Search" name="rss"><br/>
+        <button class="btn btn-outline-secondary" type="submit">Search</button>
+    </form>
+
+
+{% endblock %}}
