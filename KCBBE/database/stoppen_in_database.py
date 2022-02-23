@@ -6,7 +6,7 @@ def main_stoppen():
     from mysql.connector import connect, Error
 
     # Read input file
-    df = pd.read_csv("out.txt")
+    df = pd.read_csv("output.txt")
 
     # Try to make a connection with the database
     try:

@@ -8,6 +8,12 @@ import pandas as pd
 from django.http import HttpResponseRedirect
 from .lezen_van_rss import main
 from .stoppen_in_database import main_stoppen
+from django.core.files.storage import FileSystemStorage
+from .uploaded_file.read_file import main_read_file
+import os
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect, render
+
 
 # Create your views here.
 def home(request):
@@ -50,16 +56,43 @@ def show_article(request, article_id):
 
 
 
-def read_rss(request):
 
+def read_rss(request):
+    if request.method == "POST":
+        if request.POST.get('action') == "fill_txt_field":
+            return render(request, 'text_field_rss.html')
+        else:
+            # return render(request, 'upload.html')
+            return redirect('upload/')
+
+    return render(request, 'read_rss.html')
+
+
+def text_field_rss(request):
     if request.method == "POST":
         rss = request.POST['rss']
-
+        print(rss)
         main(rss)
         alles = main_stoppen()
-
         return render (request, 'after_rss.html', {'rss': alles})
-
     else:
         return render(request, 'read_rss.html')
 
+
+def upload(request):
+    context = {}
+    if request.method == 'POST':
+        uploaded_file = request.FILES['document']
+        fs = FileSystemStorage()
+        name = fs.save(uploaded_file.name, uploaded_file)
+        context['url'] = fs.url(name)
+
+        cwd = os.getcwd()
+        new_added_file = os.path.join(cwd + fs.url(name))
+        
+        main_read_file(new_added_file)
+    
+        alles = main_stoppen()
+        return render(request, 'after_rss.html', {'rss': alles})
+
+    return render(request, 'upload.html', context)
