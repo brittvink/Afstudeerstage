@@ -10,13 +10,39 @@ def main(rss):
     # Get information from all posts in url
     for i in range(len(NewsFeed.entries)):
         entry = NewsFeed.entries[i]
-        id = entry.id
+        id = create_id(entry)
 
         # Add post to list "posts"
         posts.append((entry.title, entry.link, entry.summary, entry.published, id))
 
-    # Add posts to dataframe
-    df = pd.DataFrame(posts, columns=['title', 'link', 'summary', 'published', 'id'])
+    if len(posts) == 0:
+        return ("Er is geen data opgehaald van de link")
+    else:
+        # Add posts to dataframe
+        df = pd.DataFrame(posts, columns=['title', 'link', 'summary', 'published', 'id'])
 
-    # Write dataframe to outputfile
-    df.to_csv("out.txt", index=False)
+        # Write dataframe to outputfile
+        df.to_csv("out.txt", index=False)
+        return ("Er is data opgehaald van de link")
+
+
+def create_id(entry):
+    # Get ID
+    id = entry.id + entry.title[:30]
+    id = id.split("www.")[1]
+
+    # Remove spaces, points and slaches
+    remove_characters = [".", " ", "/"]
+    for character in remove_characters:
+        id = id.replace(character, "_")
+
+    # Make sure all ID's have the same length
+    if (len(id)) < 80:
+        difference = 80 - len(id)
+        string_to_add = ""
+        for x in range(difference):
+            string_to_add += "_"
+        id += string_to_add
+
+    # Return ID
+    return id

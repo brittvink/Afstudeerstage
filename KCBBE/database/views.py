@@ -9,7 +9,6 @@ from django.http import HttpResponseRedirect
 from .lezen_van_rss import main
 from .stoppen_in_database import main_stoppen
 from django.core.files.storage import FileSystemStorage
-from .uploaded_file.read_file import main_read_file
 import os
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
@@ -22,6 +21,7 @@ def home(request):
 
 def titles(request):
     title_list = Information.objects.all().order_by('title')
+    print(len(title_list))
     return render(request, 'title_list.html', {'title_list': title_list})
 
 
@@ -60,23 +60,31 @@ def show_article(request, article_id):
 def read_rss(request):
     if request.method == "POST":
         if request.POST.get('action') == "fill_txt_field":
-            return render(request, 'text_field_rss.html')
+            return redirect('text-field-rss')
         else:
-            # return render(request, 'upload.html')
             return redirect('upload/')
 
     return render(request, 'read_rss.html')
 
 
 def text_field_rss(request):
+    context = {}
     if request.method == "POST":
         rss = request.POST['rss']
-        print(rss)
-        main(rss)
-        alles = main_stoppen()
-        return render (request, 'after_rss.html', {'rss': alles})
-    else:
-        return render(request, 'read_rss.html')
+        eerst = Information.objects.all()
+
+        returnvalue = main(rss)
+        if returnvalue == "Er is data opgehaald van de link":
+            main_stoppen()
+            print("XXXX")
+
+        nu = Information.objects.all()
+
+        toegevoegd = len(nu) - len(eerst)
+        context['added_to_db'] = toegevoegd
+
+        context['return_value'] = returnvalue
+    return render(request, 'text_field_rss.html', context)
 
 
 def upload(request):
@@ -89,10 +97,37 @@ def upload(request):
 
         cwd = os.getcwd()
         new_added_file = os.path.join(cwd + fs.url(name))
-        
-        main_read_file(new_added_file)
-    
-        alles = main_stoppen()
-        return render(request, 'after_rss.html', {'rss': alles})
+
+        eerst = Information.objects.all()
+        returnvalue = main(new_added_file)
+
+        if returnvalue == "Er is data opgehaald van de link":
+            main_stoppen()
+
+        nu = Information.objects.all()
+
+        toegevoegd = len(nu) - len(eerst)
+        context['added_to_db'] = toegevoegd
+
+        context['return_value'] = returnvalue
 
     return render(request, 'upload.html', context)
+
+
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import Information
+from .serializers import InformationSerializers
+
+class articleList(APIView):
+    def get(self, request):
+        articles = Information.objects.all()
+        serializer = InformationSerializers(articles, many=True)
+        return Response(serializer.data)
+    def post(self):
+        pass
+
