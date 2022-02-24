@@ -1,17 +1,20 @@
-from django.shortcuts import render
 from .models import Information
 from django.db import connection
 from django.db.models import Q
 from plotly.offline import plot
 import plotly.express as px
 import pandas as pd
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from .lezen_van_rss import main
 from .stoppen_in_database import main_stoppen
 from django.core.files.storage import FileSystemStorage
 import os
-from django.http import HttpResponseRedirect
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import InformationSerializers
+from .save_searched_in_db import main_search
 
 
 # Create your views here.
@@ -26,13 +29,16 @@ def titles(request):
 
 
 def search_titles(request):
+    # If search fields are filled in and commited
     if request.method == "POST":
+        # Make variable of filled in text in form
         searched_title = request.POST['searched']
         searched_topic = request.POST['searched-topic']
         searched_topic = searched_topic.split(' ')
         searched_title = searched_title.split(' ')
-
         searched_dict = {"title": searched_title, "summary": searched_topic}
+
+        # Create seach query to find articles that match
         query = Q()
 
         for topic in searched_topic:
@@ -41,7 +47,13 @@ def search_titles(request):
         for word in searched_title:
             query = query & Q(title__icontains=word)
 
+        # find articles that match searched words
         titles = Information.objects.filter(query).order_by('title')
+
+        # Add search data to db
+        main_search(searched_topic, searched_title, titles)
+
+        # Return
         return render(request,
             'search_titles.html',
             {'searched': searched_dict, 'articles': titles})
@@ -114,14 +126,7 @@ def upload(request):
     return render(request, 'upload.html', context)
 
 
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from .models import Information
-from .serializers import InformationSerializers
+
 
 class articleList(APIView):
     def get(self, request):
