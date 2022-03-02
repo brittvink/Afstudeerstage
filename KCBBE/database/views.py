@@ -1,4 +1,4 @@
-from .models import Information
+from .models import Information, Search_info, Search
 from django.db import connection
 from django.db.models import Q
 from plotly.offline import plot
@@ -126,8 +126,6 @@ def upload(request):
     return render(request, 'upload.html', context)
 
 
-
-
 class articleList(APIView):
     def get(self, request):
         articles = Information.objects.all()
@@ -136,3 +134,16 @@ class articleList(APIView):
     def post(self):
         pass
 
+
+def show_all_filters(request):
+    alle_filters = Search_info.objects.all()
+    return render(request, 'show_all_filters.html', {'all_filters': alle_filters})
+
+
+def show_articles_with_this_filter_id(request, filter_id):
+    information = Search.objects.filter(key_id = filter_id)
+    list_arikelen = []
+    for ding in information:
+        list_arikelen.append(Information.objects.filter(id = ding.article_id))
+
+    return render(request, 'show_filter_article.html', {'ding': list_arikelen})
