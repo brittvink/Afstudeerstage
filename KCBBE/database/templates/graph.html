@@ -32,24 +32,119 @@
 
 <body>
 
-
 <script>
 
 var treeData = {
-  "name": "Top Level",
+  "name": "Biobased materials",
+                  "linkje": "show_article/sciencedaily_com_releases_2021_05_210525101645_htm'Slow_slip'_earthquakes'_hidde",
   "children": [{
-      "name": "Level 2: A",
+      "name": "Vegetable oils",
+                  "linkje": "title",
       "children": [{
-          "name": "Son of A"
+          "name": "Characteristics",
+                  "linkje": "show_article/sciencedaily_com_releases_2021_05_210525101645_htm'Slow_slip'_earthquakes'_hidde",
+          "children": [
+              {"name": "Cis vs. trans",
+                  "linkje": "title"},
+              {"name": "Saturation",
+                  "linkje": "title"},
+              {"name": "length",
+                  "linkje": "show_article/sciencedaily_com_releases_2021_05_210525101645_htm'Slow_slip'_earthquakes'_hidde"}
+          ]
         },
         {
-          "name": "Daughter of A"
+          "name": "Sources",
+                  "linkje": "title",
+          "children": [
+              {"name": "Soy bean",
+                  "linkje": "show_article/sciencedaily_com_releases_2021_05_210525101645_htm'Slow_slip'_earthquakes'_hidde"},
+              {"name": "Palm",
+                  "linkje": "title"},
+              {"name": "Rape seed",
+                  "linkje": "show_article/sciencedaily_com_releases_2021_05_210525101645_htm'Slow_slip'_earthquakes'_hidde"},
+              {"name": "Sunflower",
+                  "linkje": "title"}
+          ]
         }
       ]
     },
     {
-      "name": "Level 2: B"
+      "name": "Furans",
+                  "linkje": "title"
     }
+    ,
+    {
+      "name": "Sugar & Terpenes",
+                  "linkje": "title"
+    }
+    ,
+    {
+      "name": "Biodegradable polymers",
+                  "linkje": "show_article/sciencedaily_com_releases_2021_05_210525101645_htm'Slow_slip'_earthquakes'_hidde",
+          "children": [
+              {"name": "PHA",
+                  "linkje": "title"},
+              {"name": "PLA",
+                  "linkje": "show_article/sciencedaily_com_releases_2021_05_210525101645_htm'Slow_slip'_earthquakes'_hidde"},
+              {"name": "Polysaccharides",
+                  "linkje": "title"}
+          ]
+    }
+    ,
+    {
+        "name": "Natural polymers",
+                  "linkje": "title",
+          "children": [
+              {"name": "Polysaccharids",
+                  "linkje": "show_article/sciencedaily_com_releases_2021_05_210525101645_htm'Slow_slip'_earthquakes'_hidde",
+                  "children": [
+                      {"name": "Cellulose",
+                  "linkje": "title"},
+                      {"name": "Starch",
+                  "linkje": "show_article/sciencedaily_com_releases_2021_05_210525101645_htm'Slow_slip'_earthquakes'_hidde"},
+                      {"name": "Chitin",
+                  "linkje": "title"}
+                  ]},
+              {"name": "Lignin",
+                  "linkje": "title"},
+              {"name": "Rubber",
+                  "linkje": "show_article/sciencedaily_com_releases_2021_05_210525101645_htm'Slow_slip'_earthquakes'_hidde"}
+          ]
+
+    }
+    ,
+      {
+          "name": "Bulk polymers",
+                  "linkje": "title",
+          "children": [
+              {"name": "PE",
+                  "linkje": "title",
+              "children":[
+                  {"name": "polyethylene",
+                  "linkje": "title"}
+              ]},
+              {"name": "PET",
+                  "linkje": "show_article/sciencedaily_com_releases_2021_05_210525101645_htm'Slow_slip'_earthquakes'_hidde",
+              "children":[
+                  {"name": "polyethylene terephthalate",
+                  "linkje": "title"}
+              ]},
+              {"name": "PP",
+                  "linkje": "title",
+              "children":[
+                  {"name": "polyethylene",
+                  "linkje": "title"}
+              ]},
+              {"name": "polyamides",
+                  "linkje": "show_article/sciencedaily_com_releases_2021_05_210525101645_htm'Slow_slip'_earthquakes'_hidde",
+              "children":[
+                  {"name": "succinic acid",
+                  "linkje": "title"},
+                  {"name": "L5-diaminopentane",
+                  "linkje": "show_article/sciencedaily_com_releases_2021_05_210525101645_htm'Slow_slip'_earthquakes'_hidde"}
+              ]}
+          ]
+      }
   ]
 };
 
@@ -129,7 +224,8 @@ function update(source) {
     .attr("transform", function(d) {
       return "translate(" + source.y0 + "," + source.x0 + ")";
     })
-    .on('click', click);
+    .on('click', click)
+    .on('dblclick', dblclick);
 
   // Add Circle for the nodes
   nodeEnter.append('circle')
@@ -258,7 +354,9 @@ function update(source) {
     update(d);
   }
 
-
+  function dblclick(d){
+      window.location.href = d.data.linkje
+  }
 }
 
 
