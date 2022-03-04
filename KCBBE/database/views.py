@@ -1,20 +1,21 @@
 from .models import Information, Search_info, Search
+
 from django.db import connection
 from django.db.models import Q
-from plotly.offline import plot
-import plotly.express as px
-import pandas as pd
 from django.http import HttpResponseRedirect, HttpResponse
+from django.core.files.storage import FileSystemStorage
+from django.shortcuts import redirect, render, get_object_or_404
+
 from .lezen_van_rss import main
 from .stoppen_in_database import main_stoppen
-from django.core.files.storage import FileSystemStorage
+from .serializers import InformationSerializers
+from .save_searched_in_db import main_search
+
 import os
-from django.shortcuts import redirect, render, get_object_or_404
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import InformationSerializers
-from .save_searched_in_db import main_search
 
 
 # Create your views here.
@@ -24,8 +25,7 @@ def home(request):
 
 def titles(request):
     title_list = Information.objects.all().order_by('title')
-    print(len(title_list))
-    return render(request, 'title_list.html', {'title_list': title_list})
+    return render(request, 'showing_articles/title_list.html', {'title_list': title_list})
 
 
 def search_titles(request):
@@ -64,19 +64,18 @@ def search_titles(request):
 
 def show_article(request, article_id):
     article = Information.objects.get(pk=article_id)
-    return render(request, 'show_article.html', {'article': article})
-
-
+    return render(request, 'showing_articles/show_article.html', {'article': article})
 
 
 def read_rss(request):
     if request.method == "POST":
         if request.POST.get('action') == "fill_txt_field":
+
             return redirect('text-field-rss')
         else:
             return redirect('upload/')
 
-    return render(request, 'read_rss.html')
+    return render(request, 'upload_data_to_db/read_rss.html')
 
 
 def text_field_rss(request):
@@ -96,11 +95,12 @@ def text_field_rss(request):
         context['added_to_db'] = toegevoegd
 
         context['return_value'] = returnvalue
-    return render(request, 'text_field_rss.html', context)
+    return render(request, 'upload_data_to_db/text_field_rss.html', context)
 
 
 def upload(request):
     context = {}
+
     if request.method == 'POST':
         uploaded_file = request.FILES['document']
         fs = FileSystemStorage()
@@ -123,21 +123,25 @@ def upload(request):
 
         context['return_value'] = returnvalue
 
-    return render(request, 'upload.html', context)
+    return render(request, 'upload_data_to_db/upload.html', context)
 
 
 class articleList(APIView):
-    def get(self, request):
-        articles = Information.objects.all()
-        serializer = InformationSerializers(articles, many=True)
-        return Response(serializer.data)
-    def post(self):
-        pass
+    def get(self, request, article_id = all):
+        print(article_id)
+        if article_id == all:
+            articles = Information.objects.all()
+            serializer = InformationSerializers(articles, many=True)
+            return Response(serializer.data)
+        else:
+            articles = Information.objects.filter(id = article_id)
+            serializer = InformationSerializers(articles, many=True)
+            return Response(serializer.data)
 
 
 def show_all_filters(request):
     alle_filters = Search_info.objects.all()
-    return render(request, 'show_all_filters.html', {'all_filters': alle_filters})
+    return render(request, 'showing_filters/show_all_filters.html', {'all_filters': alle_filters})
 
 
 def show_articles_with_this_filter_id(request, filter_id):
@@ -146,4 +150,11 @@ def show_articles_with_this_filter_id(request, filter_id):
     for ding in information:
         list_arikelen.append(Information.objects.filter(id = ding.article_id))
 
-    return render(request, 'show_filter_article.html', {'ding': list_arikelen})
+    return render(request, 'showing_filters/show_filter_article.html', {'ding': list_arikelen})
+
+
+
+
+def graph(request):
+    data = [500,19,11,13,12,22,13,4,15,16,18,600,20,12,11,9]
+    return render(request, 'graph.html', {'data': data})

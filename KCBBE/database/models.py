@@ -24,12 +24,3 @@ class Search_info(models.Model):
     id = models.CharField(max_length=100, primary_key=True)
     searched_title = models.CharField(max_length=100)
     searched_topic = models.CharField(max_length=100)
-
-# - Keyword id
-# - artikel id
-# - hoe vaak is het woord gevonden (optional)
-#
-# key
-# - inforamtie over het keyword
-
-
