@@ -1,8 +1,13 @@
-def main(rss):
-    import pandas as pd
-    import argparse
-    import feedparser
+import pandas as pd
+import argparse
+import feedparser
 
+"""
+In this function an RSS link is read. The RSS link is parsed into the function.
+Then a connection is made to get all data from the RSS link. 
+The data is safed in a dataframe that is later written to a txt file.
+"""
+def main(rss):
     # Parse data from urls in list
     posts = []
     NewsFeed = feedparser.parse(rss)
@@ -17,6 +22,7 @@ def main(rss):
 
     if len(posts) == 0:
         return ("Er is geen data opgehaald van de link")
+
     else:
         # Add posts to dataframe
         df = pd.DataFrame(posts, columns=['title', 'link', 'summary', 'published', 'id'])
@@ -27,6 +33,10 @@ def main(rss):
 
 
 def create_id(entry):
+    """
+    This function creates a unique id.
+    The id consists of the link to the article + the first 30 characters of the title
+    """
     # Get ID
     id = entry.id + entry.title[:30]
     id = id.split("www.")[1]

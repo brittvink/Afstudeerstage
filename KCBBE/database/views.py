@@ -20,15 +20,24 @@ from rest_framework import status
 
 # Create your views here.
 def home(request):
+    """
+    Shows home page
+    """
     return render(request, 'home.html')
 
 
 def titles(request):
+    """
+    Shows all titles in models.Information
+    """
     title_list = Information.objects.all().order_by('title')
     return render(request, 'showing_articles/title_list.html', {'title_list': title_list})
 
 
 def search_titles(request):
+    """
+    If the seach fields are filled, the models are searched for articles that meet the criteria
+    """
     # If search fields are filled in and commited
     if request.method == "POST":
         # Make variable of filled in text in form
@@ -63,11 +72,18 @@ def search_titles(request):
 
 
 def show_article(request, article_id):
+    """
+    Shows article with the matching aricle id
+    """
     article = Information.objects.get(pk=article_id)
     return render(request, 'showing_articles/show_article.html', {'article': article})
 
 
 def read_rss(request):
+    """
+    This function redirect to either a page to upload a textfile or fill in a text field,
+    both to add data to the db
+    """
     if request.method == "POST":
         if request.POST.get('action') == "fill_txt_field":
 
@@ -79,26 +95,32 @@ def read_rss(request):
 
 
 def text_field_rss(request):
+    """
+    If the text field is filled, the link will be paresed to be read and put in the database
+    """
     context = {}
     if request.method == "POST":
         rss = request.POST['rss']
-        eerst = Information.objects.all()
+        old_number_of_articles_in_db = Information.objects.all()
 
         returnvalue = main(rss)
+        # If the link is valid and data is put in a text file, the file can be put in the db
         if returnvalue == "Er is data opgehaald van de link":
             main_stoppen()
-            print("XXXX")
 
-        nu = Information.objects.all()
+        new_number_of_articles_in_db = Information.objects.all()
 
-        toegevoegd = len(nu) - len(eerst)
+        toegevoegd = len(new_number_of_articles_in_db) - len(old_number_of_articles_in_db)
         context['added_to_db'] = toegevoegd
-
         context['return_value'] = returnvalue
+
     return render(request, 'upload_data_to_db/text_field_rss.html', context)
 
 
 def upload(request):
+    """
+    If a file is uploaded, the links are read and data is put in the database
+    """
     context = {}
 
     if request.method == 'POST':
@@ -110,29 +132,33 @@ def upload(request):
         cwd = os.getcwd()
         new_added_file = os.path.join(cwd + fs.url(name))
 
-        eerst = Information.objects.all()
+        old_number_of_articles_in_db = Information.objects.all()
         returnvalue = main(new_added_file)
 
+        # If the link is valid and data is put in a text file, the file can be put in the db
         if returnvalue == "Er is data opgehaald van de link":
             main_stoppen()
 
-        nu = Information.objects.all()
+        new_number_of_articles_in_db = Information.objects.all()
 
-        toegevoegd = len(nu) - len(eerst)
+        toegevoegd = len(new_number_of_articles_in_db) - len(old_number_of_articles_in_db)
         context['added_to_db'] = toegevoegd
-
         context['return_value'] = returnvalue
 
     return render(request, 'upload_data_to_db/upload.html', context)
 
 
 class articleList(APIView):
+    """
+    API is available, if an article id is parsed, only that information in available
+    """
     def get(self, request, article_id = all):
-        print(article_id)
+        # If no specific ID is parsed, all information will be showed
         if article_id == all:
             articles = Information.objects.all()
             serializer = InformationSerializers(articles, many=True)
             return Response(serializer.data)
+        # If ID is parsed, only that information will be shown
         else:
             articles = Information.objects.filter(id = article_id)
             serializer = InformationSerializers(articles, many=True)
@@ -140,21 +166,28 @@ class articleList(APIView):
 
 
 def show_all_filters(request):
+    """
+    Show a list of all searches that are done
+    """
     alle_filters = Search_info.objects.all()
     return render(request, 'showing_filters/show_all_filters.html', {'all_filters': alle_filters})
 
 
 def show_articles_with_this_filter_id(request, filter_id):
+    """
+    Show all articles that were found with a specific search question
+    """
     information = Search.objects.filter(key_id = filter_id)
     list_arikelen = []
-    for ding in information:
-        list_arikelen.append(Information.objects.filter(id = ding.article_id))
+    for article in information:
+        list_arikelen.append(Information.objects.filter(id = article.article_id))
 
     return render(request, 'showing_filters/show_filter_article.html', {'ding': list_arikelen})
 
 
-
-
 def graph(request):
+    """
+    Shows js graph
+    """
     data = [500,19,11,13,12,22,13,4,15,16,18,600,20,12,11,9]
     return render(request, 'graph.html', {'data': data})

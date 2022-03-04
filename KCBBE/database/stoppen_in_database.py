@@ -1,9 +1,15 @@
+import pandas as pd
+import argparse
+from getpass import getpass
+from mysql.connector import connect, Error
+
+"""
+This function put the information of the articles saved in a text file, in the database
+returns a list with all articles in the database table
+"""
+
 def main_stoppen():
-    alles = []
-    import pandas as pd
-    import argparse
-    from getpass import getpass
-    from mysql.connector import connect, Error
+    all_articles_in_database = []
 
     # Read input file
     df = pd.read_csv("out.txt")
@@ -16,28 +22,23 @@ def main_stoppen():
                 password=getpass("Enter password: "),
                 database="KCBBE2",
         ) as connection:
-            # Print connection
-            print(connection)
+            # get cursor object
+            cursor = connection.cursor()
 
             # Query to create table if this one doesn't exists yet
             create_information_table_query = """
-                                CREATE TABLE IF NOT EXISTS database_Information(
-                                title VARCHAR(500),
-                                link VARCHAR (100),
-                                summary VARCHAR(1000),
-                                published VARCHAR(100),
-                                id VARCHAR (100),
-                                PRIMARY KEY (id)
-                                )
-                            """
+                CREATE TABLE IF NOT EXISTS database_Information(
+                title VARCHAR(500),
+                link VARCHAR (100),
+                summary VARCHAR(1000),
+                published VARCHAR(100),
+                id VARCHAR (100),
+                PRIMARY KEY (id))
+            """
 
             # Execute query to create table
-            with connection.cursor() as cursor:
-                cursor.execute(create_information_table_query)
-                connection.commit()
-
-            # get cursor object
-            cursor = connection.cursor()
+            cursor.execute(create_information_table_query)
+            connection.commit()
 
             # creating column list for insertion
             cols = "`,`".join([str(i) for i in df.columns.tolist()])
@@ -52,7 +53,7 @@ def main_stoppen():
                 connection.commit()
 
             cursor.execute("SELECT * FROM database_Information")
-            alles = cursor.fetchall()
+            all_articles_in_database = cursor.fetchall()
 
             # Close connection
             cursor.close()
@@ -62,4 +63,4 @@ def main_stoppen():
     except Error as e:
         print(e)
 
-    return alles
+    return all_articles_in_database
