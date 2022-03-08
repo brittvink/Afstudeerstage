@@ -3,10 +3,12 @@ import argparse
 import feedparser
 
 """
+WIE WEET SINGLE QUOTE, EVEN OPZOEKEN. Sphinx
 In this function an RSS link is read. The RSS link is parsed into the function.
 Then a connection is made to get all data from the RSS link. 
 The data is safed in a dataframe that is later written to a txt file.
 """
+
 def main(rss):
     # Parse data from urls in list
     posts = []
@@ -24,6 +26,7 @@ def main(rss):
         return ("Er is geen data opgehaald van de link")
 
     else:
+        # NADENKEN misschien niet in df
         # Add posts to dataframe
         df = pd.DataFrame(posts, columns=['title', 'link', 'summary', 'published', 'id'])
 

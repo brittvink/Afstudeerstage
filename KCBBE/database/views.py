@@ -1,4 +1,4 @@
-from .models import Information, Search_info, Search
+from .models import Information, Search
 
 from django.db import connection
 from django.db.models import Q
@@ -9,7 +9,6 @@ from django.shortcuts import redirect, render, get_object_or_404
 from .lezen_van_rss import main
 from .stoppen_in_database import main_stoppen
 from .serializers import InformationSerializers
-from .save_searched_in_db import main_search
 
 import os
 
@@ -59,9 +58,6 @@ def search_titles(request):
         # find articles that match searched words
         titles = Information.objects.filter(query).order_by('title')
 
-        # Add search data to db
-        main_search(searched_topic, searched_title, titles)
-
         # Return
         return render(request,
             'search_titles.html',
@@ -73,7 +69,7 @@ def search_titles(request):
 
 def show_article(request, article_id):
     """
-    Shows article with the matching aricle id
+    Shows article with the matching article id
     """
     article = Information.objects.get(pk=article_id)
     return render(request, 'showing_articles/show_article.html', {'article': article})
@@ -148,7 +144,7 @@ def upload(request):
     return render(request, 'upload_data_to_db/upload.html', context)
 
 
-class articleList(APIView):
+class api(APIView):
     """
     API is available, if an article id is parsed, only that information in available
     """
@@ -169,25 +165,34 @@ def show_all_filters(request):
     """
     Show a list of all searches that are done
     """
-    alle_filters = Search_info.objects.all()
-    return render(request, 'showing_filters/show_all_filters.html', {'all_filters': alle_filters})
+    alle_filters = Search.objects.all()
+    lijst_met_onderwerpen = []
+
+    for search in alle_filters:
+        if search.search_id not in lijst_met_onderwerpen:
+            lijst_met_onderwerpen.append(search.search_id)
+
+    return render(request, 'showing_filters/show_all_filters.html', {'all_filters': alle_filters, 'lijst': lijst_met_onderwerpen})
 
 
 def show_articles_with_this_filter_id(request, filter_id):
     """
     Show all articles that were found with a specific search question
     """
-    information = Search.objects.filter(key_id = filter_id)
-    list_arikelen = []
-    for article in information:
-        list_arikelen.append(Information.objects.filter(id = article.article_id))
+    query = request.GET.get('name')
+    print(query)
+    alle_artikelen = Search.objects.filter(search_id = filter_id)
+    list = []
+    for article in alle_artikelen:
+        list.append(Information.objects.filter(id = article.article_id))
 
-    return render(request, 'showing_filters/show_filter_article.html', {'ding': list_arikelen})
+    return render(request, 'showing_filters/show_filter_article.html', {'ding': list})
 
 
 def graph(request):
     """
     Shows js graph
     """
-    data = [500,19,11,13,12,22,13,4,15,16,18,600,20,12,11,9]
-    return render(request, 'graph.html', {'data': data})
+    from .make_json import jsonmain
+    jsonmain()
+    return render(request, 'graph.html')

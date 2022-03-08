@@ -1,0 +1,112 @@
+{"name": "Biobased materials",
+                  "linkje": "title",
+  "children": [{
+      "name": "Vegetable oils",
+                  "linkje": "title",
+      "children": [{
+          "name": "Characteristics",
+                  "linkje": "title",
+          "children": [
+              {"name": "Cis vs. trans",
+                  "linkje": "title"},
+              {"name": "Saturation",
+                  "linkje": "title"},
+              {"name": "length",
+                  "linkje": "title"}
+          ]
+        },
+        {
+          "name": "Sources",
+                  "linkje": "title",
+          "children": [
+              {"name": "Soy bean",
+                  "linkje": "title"},
+              {"name": "Palm",
+                  "linkje": "title"},
+              {"name": "Rape seed",
+                  "linkje": "title"},
+              {"name": "Sunflower",
+                  "linkje": "title"}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Furans",
+                  "linkje": "title"
+    }
+    ,
+    {
+      "name": "Sugar & Terpenes",
+                  "linkje": "title"
+    }
+    ,
+    {
+      "name": "Biodegradable polymers",
+                  "linkje": "title",
+          "children": [
+              {"name": "PHA",
+                  "linkje": "title"},
+              {"name": "PLA",
+                  "linkje": "title"},
+              {"name": "Polysaccharides",
+                  "linkje": "title"}
+          ]
+    }
+    ,
+    {
+        "name": "Natural polymers",
+                  "linkje": "title",
+          "children": [
+              {"name": "Polysaccharids",
+                  "linkje": "title",
+                  "children": [
+                      {"name": "Cellulose",
+                  "linkje": "title"},
+                      {"name": "Starch",
+                  "linkje": "title"},
+                      {"name": "Chitin",
+                  "linkje": "title"}
+                  ]},
+              {"name": "Lignin",
+                  "linkje": "title"},
+              {"name": "Rubber",
+                  "linkje": "title"}
+          ]
+
+    }
+    ,
+      {
+          "name": "Bulk polymers",
+                  "linkje": "title",
+          "children": [
+              {"name": "PE",
+                  "linkje": "title",
+              "children":[
+                  {"name": "polyethylene",
+                  "linkje": "title"}
+              ]},
+              {"name": "PET",
+                  "linkje": "title",
+              "children":[
+                  {"name": "polyethylene terephthalate",
+                  "linkje": "title"}
+              ]},
+              {"name": "PP",
+                  "linkje": "title",
+              "children":[
+                  {"name": "polyethylene",
+                  "linkje": "title"}
+              ]},
+              {"name": "polyamides",
+                  "linkje": "title",
+              "children":[
+                  {"name": "succinic acid",
+                  "linkje": "title"},
+                  {"name": "L5-diaminopentane",
+                  "linkje": "title"}
+              ]}
+          ]
+      }
+  ]
+}

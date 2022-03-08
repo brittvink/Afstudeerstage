@@ -14,13 +14,17 @@ class Information(models.Model):
 
 class Search(models.Model):
     id = models.CharField(max_length=100, primary_key=True)
-    key_id = models.CharField(max_length=100)
+    search_id = models.CharField(max_length=100)
     article_id = models.CharField(max_length=100)
 
     def __str__(self):
         return self.id
 
-class Search_info(models.Model):
-    id = models.CharField(max_length=100, primary_key=True)
-    searched_title = models.CharField(max_length=100)
-    searched_topic = models.CharField(max_length=100)
+
+# Andere manier van zoeken, niet via wb, gecontroleerde vocablulaire,
+# zoeken met een begrip ipv losse woorden, radpeseed(olieen, plantenolie), wij zelf bedenken, db waar we die woorden verzamelen
+# twee unique, identifier concdpt id, naam hebben
+# Begin met olien
+# resultaten laten zien afhankelijk filter, filterid
+# Check met 'normale search'
+
