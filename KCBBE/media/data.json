@@ -1,110 +1,110 @@
 {"name": "Biobased materials",
-                  "linkje": "title",
+                  "linkje": "hoi/",
   "children": [{
       "name": "Vegetable oils",
-                  "linkje": "title",
+                  "linkje": "hoi/",
       "children": [{
           "name": "Characteristics",
-                  "linkje": "title",
+                  "linkje": "hoi/",
           "children": [
               {"name": "Cis vs. trans",
-                  "linkje": "title"},
+                  "linkje": "hoi/"},
               {"name": "Saturation",
-                  "linkje": "title"},
+                  "linkje": "hoi/"},
               {"name": "length",
-                  "linkje": "title"}
+                  "linkje": "hoi/"}
           ]
         },
         {
           "name": "Sources",
-                  "linkje": "title",
+                  "linkje": "hoi/",
           "children": [
               {"name": "Soy bean",
-                  "linkje": "title"},
+                  "linkje": "hoi/"},
               {"name": "Palm",
-                  "linkje": "title"},
+                  "linkje": "hoi/"},
               {"name": "Rape seed",
-                  "linkje": "title"},
+                  "linkje": "hoi/"},
               {"name": "Sunflower",
-                  "linkje": "title"}
+                  "linkje": "hoi/"}
           ]
         }
       ]
     },
     {
       "name": "Furans",
-                  "linkje": "title"
+                  "linkje": "hoi/"
     }
     ,
     {
       "name": "Sugar & Terpenes",
-                  "linkje": "title"
+                  "linkje": "hoi/"
     }
     ,
     {
       "name": "Biodegradable polymers",
-                  "linkje": "title",
+                  "linkje": "hoi/",
           "children": [
               {"name": "PHA",
-                  "linkje": "title"},
+                  "linkje": "hoi/"},
               {"name": "PLA",
-                  "linkje": "title"},
+                  "linkje": "hoi/"},
               {"name": "Polysaccharides",
-                  "linkje": "title"}
+                  "linkje": "hoi/"}
           ]
     }
     ,
     {
         "name": "Natural polymers",
-                  "linkje": "title",
+                  "linkje": "hoi/",
           "children": [
               {"name": "Polysaccharids",
-                  "linkje": "title",
+                  "linkje": "hoi/",
                   "children": [
                       {"name": "Cellulose",
-                  "linkje": "title"},
+                  "linkje": "hoi/"},
                       {"name": "Starch",
-                  "linkje": "title"},
+                  "linkje": "hoi/"},
                       {"name": "Chitin",
-                  "linkje": "title"}
+                  "linkje": "hoi/"}
                   ]},
               {"name": "Lignin",
-                  "linkje": "title"},
+                  "linkje": "hoi/"},
               {"name": "Rubber",
-                  "linkje": "title"}
+                  "linkje": "hoi/"}
           ]
 
     }
     ,
       {
           "name": "Bulk polymers",
-                  "linkje": "title",
+                  "linkje": "hoi/",
           "children": [
               {"name": "PE",
-                  "linkje": "title",
+                  "linkje": "hoi/",
               "children":[
                   {"name": "polyethylene",
-                  "linkje": "title"}
+                  "linkje": "hoi/"}
               ]},
               {"name": "PET",
-                  "linkje": "title",
+                  "linkje": "hoi/",
               "children":[
                   {"name": "polyethylene terephthalate",
-                  "linkje": "title"}
+                  "linkje": "hoi/"}
               ]},
               {"name": "PP",
-                  "linkje": "title",
+                  "linkje": "hoi/",
               "children":[
                   {"name": "polyethylene",
-                  "linkje": "title"}
+                  "linkje": "hoi/"}
               ]},
               {"name": "polyamides",
-                  "linkje": "title",
+                  "linkje": "hoi/",
               "children":[
                   {"name": "succinic acid",
-                  "linkje": "title"},
+                  "linkje": "hoi/"},
                   {"name": "L5-diaminopentane",
-                  "linkje": "title"}
+                  "linkje": "hoi/"}
               ]}
           ]
       }

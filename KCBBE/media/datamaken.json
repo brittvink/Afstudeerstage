@@ -1,21 +1,112 @@
-{
-    "children": [
-        {
-            "children": [],
-            "linkje": "",
-            "name": "left"
+{"name": "Biobased materials",
+                  "linkje": "articles-of-filter/?item=length",
+  "children": [{
+      "name": "Vegetable oils",
+                  "linkje": "articles-of-filter/?item=length",
+      "children": [{
+          "name": "Characteristics",
+                  "linkje": "articles-of-filter/?item=cis_and_trans&item=saturation&item=length&type=or",
+          "children": [
+              {"name": "Cis vs. trans",
+                  "linkje": "articles-of-filter/?item=cis_and_trans"},
+              {"name": "Saturation",
+                  "linkje": "articles-of-filter/?item=saturation"},
+              {"name": "length",
+                  "linkje": "articles-of-filter/?item=length"}
+          ]
         },
         {
-            "children": [],
-            "linkje": "",
-            "name": "middle"
-        },
-        {
-            "children": [],
-            "linkje": "",
-            "name": "right"
+          "name": "Sources",
+                  "linkje": "articles-of-filter/?item=soy&item=palm&item=rape&item=sunflower&type=or",
+          "children": [
+              {"name": "Soy bean",
+                  "linkje": "articles-of-filter/?item=soy"},
+              {"name": "Palm",
+                  "linkje": "articles-of-filter/?item=palm"},
+              {"name": "Rape seed",
+                  "linkje": "articles-of-filter/?item=rape"},
+              {"name": "Sunflower",
+                  "linkje": "articles-of-filter/?item=sunflower"}
+          ]
         }
-    ],
-    "linkje": "",
-    "name": "root"
+      ]
+    },
+    {
+      "name": "Furans",
+                  "linkje": "articles-of-filter/?item=length"
+    }
+    ,
+    {
+      "name": "Sugar & Terpenes",
+                  "linkje": "articles-of-filter/?item=length"
+    }
+    ,
+    {
+      "name": "Biodegradable polymers",
+                  "linkje": "articles-of-filter/?item=length",
+          "children": [
+              {"name": "PHA",
+                  "linkje": "articles-of-filter/?item=length"},
+              {"name": "PLA",
+                  "linkje": "articles-of-filter/?item=length"},
+              {"name": "Polysaccharides",
+                  "linkje": "articles-of-filter/?item=length"}
+          ]
+    }
+    ,
+    {
+        "name": "Natural polymers",
+                  "linkje": "articles-of-filter/?item=length",
+          "children": [
+              {"name": "Polysaccharids",
+                  "linkje": "articles-of-filter/?item=length",
+                  "children": [
+                      {"name": "Cellulose",
+                  "linkje": "articles-of-filter/?item=length"},
+                      {"name": "Starch",
+                  "linkje": "articles-of-filter/?item=length"},
+                      {"name": "Chitin",
+                  "linkje": "articles-of-filter/?item=length"}
+                  ]},
+              {"name": "Lignin",
+                  "linkje": "articles-of-filter/?item=length"},
+              {"name": "Rubber",
+                  "linkje": "articles-of-filter/?item=length"}
+          ]
+
+    }
+    ,
+      {
+          "name": "Bulk polymers",
+                  "linkje": "articles-of-filter/?item=length",
+          "children": [
+              {"name": "PE",
+                  "linkje": "articles-of-filter/?item=length",
+              "children":[
+                  {"name": "polyethylene",
+                  "linkje": "articles-of-filter/?item=length"}
+              ]},
+              {"name": "PET",
+                  "linkje": "articles-of-filter/?item=length",
+              "children":[
+                  {"name": "polyethylene terephthalate",
+                  "linkje": "articles-of-filter/?item=length"}
+              ]},
+              {"name": "PP",
+                  "linkje": "articles-of-filter/?item=length",
+              "children":[
+                  {"name": "polyethylene",
+                  "linkje": "articles-of-filter/?item=length"}
+              ]},
+              {"name": "polyamides",
+                  "linkje": "articles-of-filter/?item=length",
+              "children":[
+                  {"name": "succinic acid",
+                  "linkje": "articles-of-filter/?item=length"},
+                  {"name": "L5-diaminopentane",
+                  "linkje": "articles-of-filter/?item=length"}
+              ]}
+          ]
+      }
+  ]
 }

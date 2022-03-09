@@ -8,7 +8,7 @@
   <tbody>
     {% for article in lijst%}
         <tr>
-          <td> <a href="{% url 'filter22'%}?item={{article.title}}" >{{article}}</a> </td>
+          <td> <a href="{% url 'article'%}?item={{article.title}}" >{{article}}</a> </td>
         </tr>
     {% endfor %}
   </tbody>
