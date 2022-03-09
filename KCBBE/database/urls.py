@@ -17,4 +17,11 @@ urlpatterns = [
     path('show_all_filters', views.show_all_filters, name='show-all-filters'),
     path('show_filter_articles/<filter_id>', views.show_articles_with_this_filter_id, name='show-filter-articles'),
     path('plaatje', views.graph, name='plaatje'),
+    url(r'^search/$', views.search, name='search_view'),
+    url(r'^search2/$', views.search2, name='search_view2'),
+    url(r'^hoi/$', views.hoi, name='hoi2'),
+    url(r'^filter/$', views.filter, name='filter22' ),
+    url(r'^filters/$', views.hoi3, name='hoi3'),
+    url(r'^filter-now/$', views.filter222, name='show-filter-22'),
+
 ]

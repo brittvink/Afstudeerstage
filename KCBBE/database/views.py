@@ -179,8 +179,6 @@ def show_articles_with_this_filter_id(request, filter_id):
     """
     Show all articles that were found with a specific search question
     """
-    query = request.GET.get('name')
-    print(query)
     alle_artikelen = Search.objects.filter(search_id = filter_id)
     list = []
     for article in alle_artikelen:
@@ -188,6 +186,26 @@ def show_articles_with_this_filter_id(request, filter_id):
 
     return render(request, 'showing_filters/show_filter_article.html', {'ding': list})
 
+import urllib
+from django.shortcuts import redirect
+
+def redirect_params(url, params=None):
+    response = redirect(url)
+    if params:
+        query_string =  urllib.parse.urlencode(params)
+        response['Location'] += '?' + query_string
+    return response
+
+def search(request):
+    your_params = {
+        'item': 4
+    }
+    return redirect_params('search_view2', your_params)
+
+def search2(request):
+    query = request.GET.get('item')
+    print(query)
+    return redirect('home')
 
 def graph(request):
     """
@@ -196,3 +214,48 @@ def graph(request):
     from .make_json import jsonmain
     jsonmain()
     return render(request, 'graph.html')
+
+
+def hoi(request):
+    title_list = Information.objects.all().order_by('title')
+    return render(request, 'hoi.html', {'title_list': title_list})
+
+
+
+def filter(request):
+    query = request.GET.get('item')
+    article = Information.objects.get(title=query)
+    return render(request, 'showing_articles/show_article.html', {'article': article})
+
+def hoi3(request):
+    alle_filters = Search.objects.all()
+    lijst_met_onderwerpen = []
+
+    for search in alle_filters:
+        if search.search_id not in lijst_met_onderwerpen:
+            lijst_met_onderwerpen.append(search.search_id)
+    return render(request, 'showfilter.html', {'lijst': lijst_met_onderwerpen})
+
+def filter222(request):
+    filter_id = request.GET.getlist('item')
+
+    all_lists = []
+    counter = 0
+    for i in filter_id:
+        list2 = []
+        answers = Information.objects.raw(
+            """select KCBBE2.database_Information.id 
+            from KCBBE2.database_Information 
+            inner join KCBBE2.database_Search 
+            on KCBBE2.database_Information.id=KCBBE2.database_Search.article_id 
+            where KCBBE2.database_Search.search_id = '""" +
+            filter_id[counter] + """'""")
+        for p in answers:
+            list2.append(p)
+        all_lists.append(list2)
+        counter+=1
+
+    aap = set.intersection(*[set(x) for x in all_lists])
+    list2 =  (list(aap))
+
+    return render(request, 'show_all_articles_of_filter.html', {'lijst': list2})

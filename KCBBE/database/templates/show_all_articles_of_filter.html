@@ -6,9 +6,9 @@
 
 <table class="table">
   <tbody>
-    {% for filter in lijst%}
+    {% for article in lijst%}
         <tr>
-            <td> <a href="{% url 'show-filter-articles' filter  %}" >{{filter}}</a> </td>
+          <td> <a href="{% url 'filter22'%}?item={{article.title}}" >{{article}}</a> </td>
         </tr>
     {% endfor %}
   </tbody>

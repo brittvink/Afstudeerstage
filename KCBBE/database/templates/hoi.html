@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content%}
+
+<table class="table">
+  <tbody>
+    {% for article in title_list%}
+        <tr>
+          <td> <a href="{% url 'filter22'%}?item={{article.title}}" >{{article}}</a> </td>
+        </tr>
+    {% endfor %}
+  </tbody>
+
+</table>
+{% endblock %}}
