@@ -17,5 +17,6 @@ urlpatterns = [
     url(r'^article/$', views.show_article, name='article' ),
     url(r'^filters/$', views.show_filters, name='all-filters'),
     url(r'^articles-of-filter/$', views.show_articles_of_filter, name='show-articles-of-filter'),
-
+    url(r'^add_synonym/$', views.add_synonym, name="add-synonym"),
+    url(r'^show_synonym/$', views.show_synonym, name="show-synonym")
 ]

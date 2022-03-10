@@ -1,4 +1,4 @@
-from .models import Information, Search
+from .models import Information, Search, Vocabulair
 
 from django.db import connection
 from django.db.models import Q
@@ -211,3 +211,67 @@ def show_articles_of_filter(request):
         list_with_articles_to_return = [item for sublist in all_lists_with_articles for item in sublist]
 
     return render(request, 'show_all_articles_of_filter.html', {'lijst': list_with_articles_to_return})
+
+def add_synonym(request):
+    from getpass import getpass
+    from mysql.connector import connect, Error
+
+    key = request.GET.get('key')
+    if key == None:
+        key = ""
+
+    if request.method == "POST":
+        onder = request.POST['onder']
+        woord = request.POST['woord']
+        # Try to make a connection with the database
+        try:
+            with connect(
+                    host="localhost",
+                    user="root",
+                    password="HoiAap12",
+                    database="KCBBE2",
+            ) as connection:
+                # get cursor object
+                cursor = connection.cursor()
+
+                # Query to create table if this one doesn't exists yet
+                create_information_table_query = """
+                        CREATE TABLE IF NOT EXISTS database_Vocabulair(
+                        id VARCHAR(100),
+                        key_id VARCHAR (100),
+                        word VARCHAR(100),
+                        PRIMARY KEY (id))
+                    """
+
+                # Execute query to create table
+                cursor.execute(create_information_table_query)
+                connection.commit()
+
+                import uuid
+                id = uuid.uuid1()
+                id_num = id.int
+
+                sql = "INSERT INTO database_Vocabulair (id, key_id, word) VALUES ('" + str(id_num) + "', '" + onder + "', '" + woord + "')"
+                cursor.execute(sql)
+                connection.commit()
+
+
+            # Throw error if trying to connect fails
+        except Error as e:
+            print(e)
+
+        return render(request, 'synonym.html', {'onder': onder, 'woord': woord})
+    else:
+        return render(request, 'synonym.html', {'key': key })
+
+def show_synonym(request):
+    all_synonymes = Vocabulair.objects.all()
+
+    lijst_met_onderwerpen = {}
+
+    for search in all_synonymes:
+        if search.key_id not in lijst_met_onderwerpen:
+            lijst_met_onderwerpen[search.key_id] = []
+        lijst_met_onderwerpen[search.key_id].append(search)
+
+    return render(request, 'show_synonym.html', {"list": lijst_met_onderwerpen})

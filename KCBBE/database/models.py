@@ -20,6 +20,11 @@ class Search(models.Model):
     def __str__(self):
         return self.id
 
+class Vocabulair(models.Model):
+    id = models.CharField(max_length=100, primary_key=True)
+    key_id = models.CharField(max_length=100)
+    word = models.CharField(max_length=100)
+
 
 # Andere manier van zoeken, niet via wb, gecontroleerde vocablulaire,
 # zoeken met een begrip ipv losse woorden, radpeseed(olieen, plantenolie), wij zelf bedenken, db waar we die woorden verzamelen

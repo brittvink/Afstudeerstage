@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content%}
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="bootstrap,bootstrap accordion,accordion with arrow">
+    <meta name="author" content="start templates Development">
+    <title>Bootstrap Accordion</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" type="text/css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans+Narrow" rel="stylesheet">
+
+  </head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-offset-1 col-md-10">
+            <h2 class=" text-white">Bootstrap Accordion</h2>
+            <span class="loader pull-right"><span class="loader-inner"></span></span>
+            <hr></br>
+
+
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+
+                    {% for key, value in list.items %}
+
+
+                    <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="heading{{key}}">
+                        <h4 class="panel-title">
+                            <a class="collapsed last" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{key}}" aria-expanded="false" aria-controls="collapseThree">
+                                {{key}}
+                                <span> </span>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse{{key}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                        <div class="panel-body">
+                            {% for i in value %}
+                            <p>{{i.word}}</p>
+                            {% endfor %}
+                            <a href="{% url 'add-synonym' %}?key={{key}}" class="button">Add word to this list</a>
+
+                        </div>
+                    </div>
+                </div>
+
+                    {% endfor %}
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</div>
+
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+<script type="text/javascript"  src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+{% endblock %}}
