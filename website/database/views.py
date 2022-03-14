@@ -11,6 +11,7 @@ from .stoppen_in_database import main_stoppen
 from .serializers import InformationSerializers
 from .make_json import jsonmain
 from .add_word_to_vocabulaire_db import add_word_to_db
+from .webscraping import main_webscraping
 
 import os
 import urllib
@@ -150,6 +151,7 @@ def show_all_articles(request):
     """
     Show all articles
     """
+    # make_text_files(request)
     article_list = Information.objects.all().order_by('title')
     return render(request, 'show_all_articles.html', {'article_list': article_list})
 
@@ -160,7 +162,14 @@ def show_article(request):
     """
     query = request.GET.get('item')
     article = Information.objects.get(title=query)
-    return render(request, 'showing_articles/show_article.html', {'article': article})
+
+    filename = "media/articles/" + article.id + ".txt"
+    f = open(filename, "r")
+    result = f.readlines()
+    f.close()
+    result = result[0]
+
+    return render(request, 'showing_articles/show_article.html', {'article': article, 'article_text': result})
 
 
 def show_filters(request):
@@ -243,3 +252,14 @@ def show_vocabulair(request):
         list_with_all_different_synonymes[synonyme.key_id].append(synonyme)
 
     return render(request, 'show_vocabulair.html', {"list_different_synonymes": list_with_all_different_synonymes})
+
+def make_text_files(request):
+    all_articles = Information.objects.all()
+    for article in all_articles:
+        print(article.id)
+
+        result = main_webscraping(article.link)
+        filename = "media/articles/" + article.id + ".txt"
+        f = open(filename, "w")
+        f.write(result)
+        f.close()

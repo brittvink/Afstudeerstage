@@ -25,6 +25,10 @@ class Vocabulair(models.Model):
     key_id = models.CharField(max_length=100)
     word = models.CharField(max_length=100)
 
+#vierlettercode, zelfde lengte
+#tag tag value waarden
+
+
 
 # Andere manier van zoeken, niet via wb, gecontroleerde vocablulaire,
 # zoeken met een begrip ipv losse woorden, radpeseed(olieen, plantenolie), wij zelf bedenken, db waar we die woorden verzamelen
