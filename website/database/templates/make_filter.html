@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content%}
+<center>
+<h1> Welcome! </h1>
+
+    <form method=POST action="{% url 'make-filter' %}">
+        {% csrf_token %}
+        <input type="search" placeholder="Search articles by title" aria-label="Search" name="filter"><br/>
+        <button class="btn btn-outline-secondary" type="submit">Search</button>
+    </form>
+
+</center>
+{% endblock %}}

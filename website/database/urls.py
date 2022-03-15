@@ -18,4 +18,5 @@ urlpatterns = [
     url(r'^articles-of-filter/$', views.show_articles_of_filter, name='show-articles-of-filter'),
     url(r'^add_vocabulair/$', views.add_vocabulair, name="add-vocabulair"),
     url(r'^show_vocabulair/$', views.show_vocabulair, name="show-vocabulair"),
+    path('make_filter', views.make_filter, name="make-filter")
 ]

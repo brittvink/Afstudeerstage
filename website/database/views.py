@@ -12,6 +12,7 @@ from .serializers import InformationSerializers
 from .make_json import jsonmain
 from .add_word_to_vocabulaire_db import add_word_to_db
 from .webscraping import main_webscraping
+from .make_filter import main_make_filter
 
 import os
 import urllib
@@ -263,3 +264,14 @@ def make_text_files(request):
         f = open(filename, "w")
         f.write(result)
         f.close()
+
+def make_filter(request):
+
+    if request.method == "POST":
+        input = request.POST['filter']
+        all_articles = Information.objects.all()
+
+        main_make_filter(input, all_articles)
+        return redirect('all-filters')
+
+    return render(request, 'make_filter.html')
