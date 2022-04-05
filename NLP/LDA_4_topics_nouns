@@ -1,0 +1,12 @@
+topic: 0
+0.012*"researchers" + 0.012*"research" + 0.009*"study" + 0.007*"data" + 0.007*"university" + 0.007*"brain" + 0.006*"professor" + 0.005*"information" + 0.005*"team" + 0.005*"students"
+
+topic: 1
+0.030*"cells" + 0.017*"cancer" + 0.012*"research" + 0.012*"researchers" + 0.012*"cell" + 0.010*"study" + 0.009*"disease" + 0.009*"patients" + 0.008*"gene" + 0.007*"mice"
+
+topic: 2
+0.023*"study" + 0.019*"health" + 0.015*"patients" + 0.012*"risk" + 0.010*"research" + 0.010*"researchers" + 0.008*"disease" + 0.007*"women" + 0.007*"children" + 0.006*"levels"
+
+topic: 3
+0.009*"research" + 0.009*"study" + 0.008*"researchers" + 0.007*"university" + 0.007*"water" + 0.007*"years" + 0.007*"species" + 0.006*"team" + 0.005*"climate" + 0.005*"data"
+

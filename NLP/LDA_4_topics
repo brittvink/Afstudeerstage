@@ -1,0 +1,12 @@
+topic: 0
+0.008*"said" + 0.007*"study" + 0.006*"species" + 0.006*"research" + 0.005*"climate" + 0.005*"researchers" + 0.004*"water" + 0.004*"university" + 0.004*"years" + 0.004*"new"
+
+topic: 1
+0.007*"said" + 0.006*"new" + 0.005*"researchers" + 0.005*"research" + 0.005*"team" + 0.004*"used" + 0.004*"using" + 0.004*"data" + 0.004*"energy" + 0.004*"university"
+
+topic: 2
+0.012*"cells" + 0.010*"patients" + 0.009*"study" + 0.008*"disease" + 0.007*"cancer" + 0.007*"research" + 0.006*"researchers" + 0.006*"brain" + 0.006*"said" + 0.005*"new"
+
+topic: 3
+0.012*"study" + 0.009*"health" + 0.009*"said" + 0.008*"people" + 0.006*"research" + 0.006*"researchers" + 0.005*"risk" + 0.005*"children" + 0.004*"participants" + 0.004*"use"
+

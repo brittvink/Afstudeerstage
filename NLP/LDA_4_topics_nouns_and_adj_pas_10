@@ -1,0 +1,12 @@
+topic: 0
+0.015*"study" + 0.012*"health" + 0.008*"research" + 0.008*"researchers" + 0.007*"risk" + 0.006*"children" + 0.005*"university" + 0.005*"participants" + 0.005*"data" + 0.005*"women"
+
+topic: 1
+0.009*"research" + 0.008*"researchers" + 0.007*"new" + 0.006*"study" + 0.005*"university" + 0.005*"team" + 0.005*"species" + 0.004*"data" + 0.004*"water" + 0.004*"energy"
+
+topic: 2
+0.007*"new" + 0.007*"years" + 0.006*"earth" + 0.006*"space" + 0.006*"planets" + 0.006*"solar" + 0.005*"university" + 0.005*"planet" + 0.005*"research" + 0.005*"study"
+
+topic: 3
+0.016*"cells" + 0.013*"patients" + 0.010*"study" + 0.010*"cancer" + 0.009*"disease" + 0.009*"research" + 0.009*"researchers" + 0.008*"brain" + 0.007*"new" + 0.006*"cell"
+

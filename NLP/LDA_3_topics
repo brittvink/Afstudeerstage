@@ -1,0 +1,9 @@
+topic: 0
+0.011*"study" + 0.008*"said" + 0.008*"health" + 0.007*"people" + 0.006*"research" + 0.006*"researchers" + 0.005*"risk" + 0.004*"university" + 0.004*"children" + 0.004*"use"
+
+topic: 1
+0.008*"said" + 0.005*"research" + 0.005*"new" + 0.005*"researchers" + 0.004*"study" + 0.004*"university" + 0.004*"team" + 0.003*"used" + 0.003*"data" + 0.003*"time"
+
+topic: 2
+0.012*"cells" + 0.008*"patients" + 0.008*"study" + 0.007*"cancer" + 0.007*"disease" + 0.007*"research" + 0.006*"researchers" + 0.006*"said" + 0.005*"brain" + 0.005*"new"
+

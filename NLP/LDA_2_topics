@@ -1,0 +1,6 @@
+topic: 0
+0.008*"cells" + 0.007*"said" + 0.007*"study" + 0.006*"research" + 0.006*"researchers" + 0.005*"new" + 0.004*"cancer" + 0.004*"university" + 0.003*"disease" + 0.003*"team"
+
+topic: 1
+0.009*"study" + 0.008*"said" + 0.006*"research" + 0.006*"researchers" + 0.005*"health" + 0.004*"people" + 0.004*"patients" + 0.004*"brain" + 0.004*"university" + 0.004*"new"
+
