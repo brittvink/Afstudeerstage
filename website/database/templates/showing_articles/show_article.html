@@ -1,18 +1,25 @@
 {% extends 'base.html' %}
 
 {% block content%}
-
-<div class="card">
+<center>
+</br>
+</br>
+<div class="card"  style="width:60%">
   <div class="card-header">
-          {{article}}
+          {{article.title}}
   </div>
   <div class="card-body">
-    <p class="card-text">{{article.title}}</p>
-    <p class="card-text">{{article.summary}}</p>
-    <p class="card-text">{{article_text}}</p>
-    <p class="card-text">{{article.published}}</p>
-    <p class="card-text"> <a href="{{article.link}}" target="_blank">{{article.link}}</a> </p>
+      <h4 align="left" class="card-title">Summary:</h4>
+    <p align="left" class="card-text">{{article.summary}}</p>
+
+      <h4 align="left" class="card-title">Text of the article:</h4>
+    <p align="left" class="card-text">{{article_text}}</p>
+
+      <h4 align="left" class="card-title">Published:</h4>
+    <p align="left" class="card-text">{{article.published}}</p>
+
+    <p align="left" class="card-text"> <a href="{{article.link}}" target="_blank">{{article.link}}</a> </p>
   </div>
 </div>
-
+</center>
 {% endblock %}}

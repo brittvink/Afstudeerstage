@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content%}
-
-<table class="table">
+<center>
+<h1>Here all articles are listed</h1>
+</br>
+<table class="table table-striped" style="width:60%">
   <tbody>
     {% for article in article_list %}
         <tr>
@@ -12,4 +14,5 @@
   </tbody>
 
 </table>
-{% endblock %}}
+</center>
+{% endblock %}

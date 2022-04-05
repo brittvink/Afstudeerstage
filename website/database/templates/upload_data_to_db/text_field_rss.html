@@ -1,16 +1,18 @@
 {% extends 'base.html' %}
 
 {% block content%}
-
-<h1>text field</h1>
-
+<center>
+<h1>Write RSS link</h1>
+<h3> Please write a RSS link and submit.</h3>
 <form method=POST action="{% url 'text-field-rss' %}">
         {% csrf_token %}
+        <label class="custom-text-input">
         <input type="search" placeholder="rss to read" aria-label="Search" name="rss"><br/>
-        <button class="btn btn-outline-secondary" type="submit">Search</button>
+        </label>
+        <button class="button button1" type="submit">Search</button>
 </form>
 
 {{ return_value }}<br/>
-
+</center>
 
 {% endblock %}}

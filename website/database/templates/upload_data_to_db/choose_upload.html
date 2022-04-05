@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<center>
+  <h1>Upload your file</h1>
+<h3>Please upload a text file with on each line a RSS link</h3>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <label class="custom-file-upload">
+        <input  type="file" name="document"><br/>
+        </label>
+
+        <button class="button button1" type="submit">Upload file</button>
+    </form>
+
+  {% if url %}
+    <p>Uploaded file: <a href="{{ url }}">{{ url }}</a></p>
+  {% endif %}
+
+{{ return_value }}
+</center>
+{% endblock %}

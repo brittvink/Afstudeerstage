@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+ {% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+
+
+{% block content%}
+    <center>
+<h1>All synonymes are shown here</h1>
+        <h3>First give the parent, the vocabulaire you want to add to, than give the word you want to add.</h3>
+
+<form method=POST action="{% url 'add-vocabulair' %}">
+        {% csrf_token %}
+        <input class="custom-text-input" type="search" placeholder="Parent" aria-label="Search" name="onder" value={{key}}><br/>
+        <input class="custom-text-input" type="search" placeholder="child" aria-label="Search" name="woord"><br/>
+        <button class="button button1" type="submit">Submit</button>
+</form>
+
+{{woord}} <br/>
+{{onder}}
+
+    </center>
+
+{% endblock %}}

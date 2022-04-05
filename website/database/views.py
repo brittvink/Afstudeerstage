@@ -6,8 +6,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import redirect, render, get_object_or_404
 
-from .lezen_van_rss import main
-from .stoppen_in_database import main_stoppen
+from .read_rss_data import main
+from .put_article_in_db import main_stoppen
 from .serializers import InformationSerializers
 from .make_json import jsonmain
 from .add_word_to_vocabulaire_db import add_word_to_db
@@ -56,11 +56,11 @@ def search_titles_and_topics(request):
 
         # Return
         return render(request,
-            'search_titles.html',
+            'found_searched_articles.html',
             {'searched': searched_dict, 'articles': articles})
 
     else:
-        return render(request, 'search.html', {})
+        return render(request, 'search_for_articles.html', {})
 
 
 def read_rss(request):
@@ -74,7 +74,7 @@ def read_rss(request):
         else:
             return redirect('upload/')
 
-    return render(request, 'upload_data_to_db/read_rss.html')
+    return render(request, 'upload_data_to_db/rss_file.html')
 
 
 def text_field_rss(request):
@@ -128,7 +128,7 @@ def upload(request):
 
         context['return_value'] = returnvalue
 
-    return render(request, 'upload_data_to_db/upload.html', context)
+    return render(request, 'upload_data_to_db/choose_upload.html', context)
 
 
 class api(APIView):
@@ -237,9 +237,9 @@ def add_vocabulair(request):
 
         add_word_to_db(parent, child)
 
-        return render(request, 'vocabulair.html', {'onder': parent, 'woord': child})
+        return render(request, 'add_synonym.html', {'onder': parent, 'woord': child})
     else:
-        return render(request, 'vocabulair.html', {'key': key })
+        return render(request, 'add_synonym.html', {'key': key })
 
 
 def show_vocabulair(request):

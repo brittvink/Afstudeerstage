@@ -2,9 +2,10 @@
 
 {% block content%}
 
-<h1>All filters will be shown here</h1>
+    <center>
+<h1>All filters are shown here</h1>
 
-<table class="table">
+<table class="table table-striped" style="width:60%">
   <tbody>
     {% for topic in topics_list%}
         <tr>
@@ -13,5 +14,6 @@
     {% endfor %}
   </tbody>
 </table>
+    </center>
 
 {% endblock %}}
