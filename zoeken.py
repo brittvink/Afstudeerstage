@@ -31,7 +31,8 @@ class main():
         # Get the command line arguments.
         arguments = self.create_argument_parser()
         self.search_string = getattr(arguments, 'search')
-
+        self.user = getattr(arguments, 'user')
+        self.password = getattr(arguments, 'password')
 
     @staticmethod
     def create_argument_parser():
@@ -54,41 +55,68 @@ class main():
                             nargs='+',
                             help="The path to the input file.")
 
+        parser.add_argument("-u",
+                            "--user",
+                            type=str,
+                            required=True,
+                            help="database user name")
+
+        parser.add_argument("-p",
+                            "--password",
+                            type=str,
+                            required=True,
+                            help="database password")
+
         return parser.parse_args()
 
+
     def start(self):
+        """
+            Return nothing.
+            Print list of articles
+
+            :param self.search_string: String with words
+            :param self.user: String database user name
+            :param self.password: String database password
+
+            If a word from the string of words is found in a article title or summary, the article is printed
+        """
+
         # Print arguments
         self.print_arguments()
 
         # Try to connect with database
+        cnx = self.make_db_connection()
+        cursor = cnx.cursor()
+
+
+        for word in self.search_string:
+            # Execute search query
+            cursor.execute("SELECT title FROM database_Information where title LIKE '%" + word + "%' OR summary LIKE '%" + word + "%'")
+
+            # Fetch all results
+            result = cursor.fetchall()
+
+        cursor.close()
+        cnx.close()
+
+        # Print result
+        for row in result:
+            print(row)
+
+
+    def make_db_connection(self):
         try:
-            with connect(
-                    host="localhost",
-                    user=input("Enter username: "),
-                    password=getpass("Enter password: "),
-                    database="KCBBE",
-            ) as connection:
-                # print connection
-                print(connection)
-
-                cursor = connection.cursor()
-
-                # Search for every searched word
-                for word in self.search_string:
-                    # Execute search query
-                    cursor.execute("SELECT title FROM information where title LIKE '%" + word + "%' OR summary LIKE '%" + word + "%'")
-
-                    # Fetch all results
-                    result = cursor.fetchall()
-
-                    # Loop through the results and print them
-                    for row in result:
-                        print(row)
-                        print("\n")
-
+            connection = connect(
+                host="localhost",
+                user=self.user,
+                password=self.password,
+                database="KCBBE2",
+            )
+            return connection
         except Error as e:
-            # Show error if connection could not be made
             print(e)
+
 
     def print_arguments(self):
         print("Arguments:")
