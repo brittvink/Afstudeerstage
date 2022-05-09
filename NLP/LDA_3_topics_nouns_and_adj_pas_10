@@ -1,9 +1,0 @@
-topic: 0
-0.015*"study" + 0.011*"health" + 0.008*"research" + 0.008*"researchers" + 0.007*"risk" + 0.005*"university" + 0.005*"children" + 0.005*"patients" + 0.004*"participants" + 0.004*"data"
-
-topic: 1
-0.018*"cells" + 0.010*"cancer" + 0.010*"patients" + 0.009*"study" + 0.009*"research" + 0.009*"disease" + 0.009*"researchers" + 0.007*"new" + 0.007*"cell" + 0.006*"brain"
-
-topic: 2
-0.007*"research" + 0.007*"researchers" + 0.007*"new" + 0.006*"study" + 0.005*"university" + 0.005*"team" + 0.004*"data" + 0.004*"water" + 0.004*"years" + 0.004*"species"
-

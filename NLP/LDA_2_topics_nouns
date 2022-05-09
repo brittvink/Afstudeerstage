@@ -1,6 +1,0 @@
-topic: 0
-0.016*"study" + 0.013*"cells" + 0.012*"patients" + 0.011*"research" + 0.011*"researchers" + 0.008*"disease" + 0.008*"cancer" + 0.007*"health" + 0.007*"brain" + 0.006*"university"
-
-topic: 1
-0.010*"research" + 0.010*"study" + 0.010*"researchers" + 0.007*"university" + 0.007*"data" + 0.005*"team" + 0.005*"professor" + 0.004*"years" + 0.004*"water" + 0.004*"science"
-
