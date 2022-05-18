@@ -1,24 +1,12 @@
 #!/usr/bin/env python
-import string
 
-import numpy as np
-import pandas as pd
-import argparse
 import os
-from pathlib import Path
-from sklearn.feature_extraction.text import CountVectorizer
-
-
-import re
 import argparse
 import pandas as pd
 import pickle
 import gensim
-from nltk.corpus import stopwords
 from gensim.utils import  simple_preprocess
-import spacy
 import gensim.corpora as corpora
-import matplotlib.pyplot as plt
 
 
 # Metadata
@@ -116,22 +104,29 @@ class main():
                                                     iterations=2,
                                                     per_word_topics=True)
 
+        outpath_data = os.path.join(self.outdir,
+                                    "{}_data_{}_topics_{}_passes_topics.txt".format(self.prefix, self.nt, self.passes))
+
+        with open(outpath_data, 'w') as f:
+            f.writelines(str(lda_model.print_topics()))
+
         print(lda_model.print_topics())
 
         outpath_lda_model = os.path.join(self.outdir,
                                "{}_lda_model_{}_topics_{}_passes.pk".format(self.prefix, self.nt, self.passes))
 
-        with open(outpath_lda_model, 'wb') as pickle_file:
+        with open(outpath_lda_model, 'w') as pickle_file:
             pickle.dump(lda_model, pickle_file)
 
         outpath_corpus = os.path.join(self.outdir,
-                                         "{}_corpus_{}_topics_{}_passes.pk".format(self.prefix, self.nt, self.passes))
-        with open(outpath_corpus, 'wb') as pickle_file:
+                                    "{}_corpus_{}_topics_{}_passes.pk".format(self.prefix, self.nt, self.passes))
+
+        with open(outpath_corpus, 'w') as pickle_file:
             pickle.dump(corpus, pickle_file)
 
         outpath_data = os.path.join(self.outdir,
                                       "{}_data_{}_topics_{}_passes.pk".format(self.prefix, self.nt, self.passes))
-        with open(outpath_data, 'wb') as pickle_file:
+        with open(outpath_data, 'w') as pickle_file:
             pickle.dump(data_ready, pickle_file)
 
 

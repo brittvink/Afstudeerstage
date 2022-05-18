@@ -4,6 +4,7 @@ import nltk
 from nltk.corpus import stopwords
 import re
 import string
+import logging
 
 
 def preprocess_text(text: str, remove_stopwords: bool) -> str:
@@ -43,8 +44,28 @@ def preprocess_text(text: str, remove_stopwords: bool) -> str:
     return text
 
 
-df = pd.read_pickle("df2.pkl")
+df = pd.read_pickle("Information_joined.pkl")
+
+logging.basicConfig(filename= "logfile_get_cleaned_data.log",
+                            filemode='w',
+                            format='%(asctime)s,%(msecs)d %(message)s',
+                            datefmt='%H:%M:%S',
+                            level=logging.DEBUG)
+
+logging.info("df: " + str(df.shape) + "with columns" + df.columns)
+logging.info("Column text has an avarage length of: " + str(df["text"].str.len().mean()))
+logging.info("Column text has " + str(df["text"].str.len().sum()) + " words")
+logging.info("Column text has quantiles " + str(df["text"].str.len().quantile([0.25, 0.5, 0.75])) + " words")
+logging.info("Column text has minimal " + str(df["text"].str.len().min()) + " words")
+logging.info("Column text has maximal " + str(df["text"].str.len().max()) + " words")
 
 df['cleaned'] = df['text'].apply(lambda x: preprocess_text(x, remove_stopwords=True))
+
+logging.info("df: " + str(df.shape) + "with columns" + df.columns)
+logging.info("Column cleaned has an avarage length of: " + str(df["cleaned"].str.len().mean()))
+logging.info("Column cleaned has " + str(df["cleaned"].str.len().sum()) + " words")
+logging.info("Column cleaned has quantiles " + str(df["cleaned"].str.len().quantile([0.25, 0.5, 0.75])) + " words")
+logging.info("Column cleaned has minimal " + str(df["cleaned"].str.len().min()) + " words")
+logging.info("Column cleaned has maximal " + str(df["cleaned"].str.len().max()) + " words")
 
 df.to_pickle("df_cleaned.pkl")

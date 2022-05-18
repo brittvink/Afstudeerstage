@@ -1,14 +1,5 @@
 #!/usr/bin/env python
 
-import pandas as pd
-import argparse
-from mysql.connector import connect, Error
-import feedparser
-from bs4 import BeautifulSoup
-from requests_html import HTMLSession
-from pathlib import Path
-
-
 """
 File:         Database.py
 Created:      2022/02/17
@@ -21,6 +12,15 @@ The data is given with the input argument (-i).
 The data is readed and put in the database
 """
 
+# Third party imports.
+import pandas as pd
+import argparse
+from mysql.connector import connect, Error
+import feedparser
+from bs4 import BeautifulSoup
+from requests_html import HTMLSession
+from pathlib import Path
+
 
 # Metadata
 __program__ = "fill database"
@@ -30,7 +30,6 @@ __email__ = "b.vink@st.hanze.nl"
 __version__ = 1.0
 __description__ = "{} is a program developed and maintained by {}. "\
                     .format(__program__, __author__)
-
 
 class main():
     def __init__(self):
@@ -93,7 +92,7 @@ class main():
         posts = self.data_to_list(urls)
 
         # Add posts to dataframe
-        df = pd.DataFrame(posts, columns=['title', 'link', 'summary', 'published', 'id'])
+        df = pd.DataFrame(posts, columns=['title', 'link', 'summary', 'published', 'id', 'rss'])
 
         # db connection
         cnx = self.make_db_connection()
@@ -115,7 +114,7 @@ class main():
     def insert_data_in_table(self, df, cols, cursor, cnx):
         # Insert DataFrame records one by one if they are not in the database present yet.
         for i, row in df.iterrows():
-            sql = "INSERT INTO `database_Information` (`" + cols + "`) VALUES (" + "%s," * (
+            sql = "INSERT INTO `database_Articles` (`" + cols + "`) VALUES (" + "%s," * (
                         len(row) - 1) + "%s) ON DUPLICATE KEY UPDATE id=id"
             cursor.execute(sql, tuple(row))
 
@@ -127,7 +126,7 @@ class main():
 
 
     def create_text_file(self, row):
-        file = Path("KCBBE/website/media/articles/" + row[-1] + ".txt")
+        file = Path("../KCBBE/website/media/articles/" + row[-2] + ".txt")
         if not file.is_file():
             result = self.main_webscraping(row[1])
             f = open(file, "w")
@@ -138,12 +137,13 @@ class main():
     def create_table(self, cnx, cursor):
         # Query to create table if this one doesn't exists yet
         create_information_table_query = """
-                    CREATE TABLE IF NOT EXISTS database_Information(
+                    CREATE TABLE IF NOT EXISTS database_Articles(
                     title VARCHAR(500),
                     link VARCHAR (100),
-                    summary VARCHAR(1000),
+                    summary VARCHAR(2000),
                     published VARCHAR(100),
                     id VARCHAR (100),
+                    rss VARCHAR(100),
                     PRIMARY KEY (id)
                     )
                 """
@@ -161,10 +161,15 @@ class main():
         article = soup.find(id="text")
         text = article.find_all("p")
 
+        lead = soup.find(id="first").text
+
         string_met_info = ""
+        string_met_info += lead
         for p in text:
             info = p.get_text()
             info = info.strip('"')
+            info = info.replace('\n', ' ')
+            info = info.replace('\t', ' ')
             info += " "
             string_met_info += info
 
@@ -202,7 +207,7 @@ class main():
             # Get information from all posts in url
             for i in range(len(NewsFeed.entries)):
                 entry = NewsFeed.entries[i]
-                posts.append((entry.title, entry.link, entry.summary, entry.published, self.create_id(entry)))
+                posts.append((entry.title, entry.link, entry.summary, entry.published, self.create_id(entry), url))
         return posts
 
 

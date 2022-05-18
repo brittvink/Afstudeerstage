@@ -11,6 +11,7 @@ from scipy import spatial
 import argparse
 import pandas as pd
 from nltk import word_tokenize, pos_tag
+import logging
 
 
 # Metadata
@@ -51,21 +52,32 @@ class main():
 
     def start(self):
         self.print_arguments()
+        logging.basicConfig(filename="logfile_spectral_clustering.log",
+                            filemode='w',
+                            format='%(asctime)s,%(msecs)d %(message)s',
+                            datefmt='%H:%M:%S',
+                            level=logging.DEBUG)
 
         df = pd.read_pickle("df_topics_kcbbe.pkl")
 
+        logging.info("df with shape " + str(df.shape))
+
         # Take keywords for each post and turn them into a textstring
         sentences = self.extract_keywords(df)
+        logging.info("keywords token")
 
         # Get list keyword sets of all articles
         data_tokenized = [word_tokenize(i) for i in sentences]
         keyword_sets = [set(post) for post in data_tokenized]
+        logging.info("keyword sets for all articles is made")
 
         # Make model
-        self.make_model()
+        self.make_model(data_tokenized)
+        logging.info("model is made")
 
         # Get vector for tokenized data
         df_vectors_tokenized_data, doc_embeddings_tokenized_data = self.get_doc_embaddings(df, data_tokenized)
+        logging.info("df with vectors of tokenized data is made. df has shape: " + str(df_vectors_tokenized_data.shape))
         print(df_vectors_tokenized_data)
 
         # Cluster and print topics with tokenized data
@@ -148,17 +160,17 @@ class main():
         return test_vectors.mean(axis=0)
 
 
-    def make_model(self):
+    def make_model(self, data_tokenized):
         # demesions for embedding specific word
 
-        # model = Word2Vec(sentences=common_texts, vector_size=300, window=5, min_count=1, workers=4)
-        # model.save("word2vec.model")
-        # model = Word2Vec.load("word2vec.model")
-        # model.build_vocab(sample_data_tokenized, update=True)
-        # # Store just the words + their trained embeddings.
-        # word_vectors = model.wv
-        # word_vectors.save("word2vec.wordvectors")
-        # # Load back with memory-mapping = read-only, shared across processes.
+        model = Word2Vec(sentences=common_texts, vector_size=300, window=5, min_count=1, workers=4)
+        model.save("word2vec.model")
+        model = Word2Vec.load("word2vec.model")
+        model.build_vocab(data_tokenized, update=True)
+        # Store just the words + their trained embeddings.
+        word_vectors = model.wv
+        word_vectors.save("word2vec.wordvectors")
+        # Load back with memory-mapping = read-only, shared across processes.
         self.wv = KeyedVectors.load("word2vec.wordvectors", mmap='r')
         # vector = wv['computer']  # Get numpy vector of a word
         # sims = wv.most_similar('computer', topn=10)  # get other similar words

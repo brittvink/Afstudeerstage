@@ -110,7 +110,7 @@ class main():
                     print(lines)
                 article_dictionary[file] = lines
 
-        os.chdir("/Users/brittvink/Desktop/NLT")
+        os.chdir("/Users/brittvink/Desktop/Afstudeerstage/NLP")
 
         return article_dictionary
 
