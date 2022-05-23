@@ -5,9 +5,11 @@ README alleen voor de website
 Install the required packages. Consider using a virtual environment to ensure the right version of packages are used.
 
 python3 -m venv <name of virtual environment>
+
+  
 source <name of virtual environment>/bin/activate
 
-  The python packager manager (pip) and the requirements file can be used to install all the necessary packages.
+The python packager manager (pip) and the requirements file can be used to install all the necessary packages.
 
 pip install -r requirements.txt
 
