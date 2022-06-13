@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content%}
+<center>
+</br>
+</br>
+<div class="card"  style="width:60%">
+  <div class="card-header">
+          {{article.title}}
+  </div>
+  <div class="card-body">
+      <h4 align="left" class="card-title">Summary:</h4>
+    <p align="left" class="card-text">{{article.summary}}</p>
+
+      <h4 align="left" class="card-title">Text of the article:</h4>
+    <p align="left" class="card-text">{{article_text}}</p>
+
+      <h4 align="left" class="card-title">Published:</h4>
+    <p align="left" class="card-text">{{article.published}}</p>
+
+      <h4 align="left" class="card-title">Original article:</h4>
+    <p align="left" class="card-text"> <a href="{{article.link}}" target="_blank">{{article.link}}</a> </p>
+
+      <h4 align="left" class="card-title">Find related articles:</h4>
+
+      <form method=POST action="{% url 'related' %}">
+        {% csrf_token %}
+        <label for="dog-names"></label>
+            <select name="searched" id="dog-names">
+                    <option value="{{article}}">{{article.title}}</option>
+            </select>
+            <select name="type" id="type">
+                <option value="TFIDF">TFIDF</option>
+                <option value="Word2Vec">Word2Vec</option>
+            </select>
+            <select name="min_similarity" id="min_similarity">
+                <option value="No">No minimal similarity</option>
+                <option value=0.1>0.1</option>
+                <option value=0.2>0.2</option>
+                <option value=0.3>0.3</option>
+                <option value=0.4>0.4</option>
+                <option value=0.5>0.5</option>
+                <option value=0.6>0.6</option>
+                <option value=0.7>0.7</option>
+                <option value=0.8>0.8</option>
+                <option value=0.9>0.9</option>
+                <option value=1.0>1.0</option>
+                <option value=1.1>1.1</option>
+                <option value=1.2>1.2</option>
+            </select>
+
+            <select name="max_articles" id="max_articles">
+                <option value=5>5</option>
+                <option value=10>10</option>
+                <option value=15>15</option>
+                <option value=20>20</option>
+            </select>
+
+
+
+        <button class="button button1" type="submit">Search</button>
+    </form>
+  </div>
+</div>
+</center>
+{% endblock %}}

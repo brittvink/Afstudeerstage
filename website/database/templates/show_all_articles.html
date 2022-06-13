@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content%}
+<center>
+<h1>Here all articles are listed</h1>
+</br>
+<table class="table table-striped" style="width:60%">
+  <tbody>
+    {% for article in article_list %}
+        <tr>
+          <td> <a href="{% url 'article'%}?item={{article.title}}" >{{article}}</a> </td>
+        </tr>
+    {% endfor %}
+  </tbody>
+
+</table>
+</center>
+{% endblock %}
