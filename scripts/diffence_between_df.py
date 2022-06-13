@@ -1,18 +1,28 @@
 #!/usr/bin/env python
-# import pandas for data wrangling
+
+"""
+File:         difference_between_df.py
+Created:      n.v.t
+Last Changed: 2022/06/10
+Author:       B.Vink
+
+This pythonscript is calculate the differences between two dataframes and plot these differences
+
+The data is given with the df1 and df2 arguments (-df1 and -df2).
+"""
+
+
 import pandas as pd
 import matplotlib.pyplot as plt
-import numpy as np
-from gensim.models import KeyedVectors
 import os
 import argparse
 
 
 # Metadata
-__program__ = "Pre-Process files to start PICALO"
+__program__ = "Calculate difference between dataframes"
 __author__ = "Britt Vink"
 __maintainer__ = "Britt Vink"
-__email__ = "bvink@umcg.nl"
+__email__ = "b.vink@st.hanze.nl"
 __license__ = "GPLv3"
 __version__ = 1.0
 __description__ = "{} is a program developed and maintained by {}. " \
@@ -29,14 +39,18 @@ class main():
         self.df1 = getattr(arguments, 'dataframe1')
         self.df2 = getattr(arguments, 'dataframe2')
 
-
         # Set variables.
         self.outdir = os.path.join(str(os.path.dirname(os.path.abspath(__file__))), 'difference_between_df', str(self.df1.split("/")[-1] + "_vs_" + self.df2.split("/")[-1]))
         if not os.path.exists(self.outdir):
             os.makedirs(self.outdir)
 
+
     @staticmethod
     def create_argument_parser():
+        """
+        Creates a argument parser
+        :return:  ArgumentParser with df1 and df2
+        """
         parser = argparse.ArgumentParser(prog=__program__,
                                          description=__description__,
                                          )
@@ -60,26 +74,24 @@ class main():
                             type=str,
                             help="The path to the input directory.")
 
-
-
         return parser.parse_args()
 
+
     def start(self):
-        # df_tokens = pd.read_pickle("processing/df_article_distance_tokenized_data.pkl")
-        # df_keys = pd.read_pickle("processing/df_article_distance_keywords.pkl")
+        """
+        The difference between two dataframes is calculated.
+        The difference is than be powered by two, so all values are positive.
+        A histrogram is made showing the difference between the dataframes
+        :return: nothing
+        """
 
         df_tokens = pd.read_pickle(self.df1)
         df_keys = pd.read_pickle(self.df2)
 
-        print(df_tokens)
-        print(df_keys)
-
         df_difference = df_tokens.subtract(df_keys)
-        print(df_difference)
 
         df_difference = df_difference.pow(2)
         df_difference['total'] = df_difference.sum(axis=1)
-        print(df_difference)
 
         plt.hist(df_difference.total.tolist(), bins=30, color="orange")
 
@@ -92,4 +104,3 @@ class main():
 if __name__ == '__main__':
     m = main()
     m.start()
-

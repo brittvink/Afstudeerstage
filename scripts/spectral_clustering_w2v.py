@@ -1,5 +1,16 @@
 #!/usr/bin/env python
 
+"""
+File:         spectral_clustering_w2v.py
+Created:      n.v.t
+Last Changed: 2022/06/10
+Author:       B.Vink
+
+This pythonscript is used to perform spectral clustering
+
+The clustering is performed and the clusters keywords are saved
+"""
+
 from sklearn.cluster import SpectralClustering
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -12,10 +23,10 @@ import os
 
 
 # Metadata
-__program__ = "Pre-Process files to start PICALO"
+__program__ = "Spectral clustering on Word2Vec vectorized data"
 __author__ = "Britt Vink"
 __maintainer__ = "Britt Vink"
-__email__ = "bvink@umcg.nl"
+__email__ = "b.vink@st.hanze.nl"
 __license__ = "GPLv3"
 __version__ = 1.0
 __description__ = "{} is a program developed and maintained by {}. " \
@@ -24,6 +35,7 @@ __description__ = "{} is a program developed and maintained by {}. " \
                   "of any kind.".format(__program__,
                                         __author__,
                                         __license__)
+
 
 
 class main():
@@ -38,6 +50,10 @@ class main():
 
     @staticmethod
     def create_argument_parser():
+        """
+                Creates a argument parser
+                :return:  ArgumentParser
+                """
         parser = argparse.ArgumentParser(prog=__program__,
                                          description=__description__,
                                          )
@@ -53,6 +69,15 @@ class main():
 
 
     def start(self):
+        """
+        Spectral clustering is performed on an array of vectors.
+        The keywords for the clusters are saved in a text file.
+        A dataframe with the cluster for each article is also saved.
+
+        :return: nothing
+
+        """
+
         self.print_arguments()
         logging.basicConfig(filename=self.outdir + "/logfile_spectral_clustering.log",
                             filemode='w',
@@ -64,7 +89,6 @@ class main():
 
         logging.info("df with shape " + str(df.shape))
 
-
         df_vectors_tokenized_data = pd.read_pickle("processing/df_vectors_tokenized_data.pkl")
         # Cluster and print topics with tokenized data
         clustering_tokenized_data = SpectralClustering(assign_labels="discretize").fit(df_vectors_tokenized_data)
@@ -74,44 +98,41 @@ class main():
 
         self.get_top_keywords(10, clustering_tokenized_data.labels_, vectorizer, df_vectors_tokenized_data)
 
-        logging.info("klaar")
-
-        print(clustering_tokenized_data)
-
         df["topic clustering tokenized data"]  = clustering_tokenized_data.labels_
-
-        # Print how many article per topic with tokenized data
-        print(pd.Series(clustering_tokenized_data.labels_).value_counts())
-
-        with (open("processing/doc_embeddings_tokenized_data.pk", "rb")) as openfile:
-            doc_embeddings_tokenized_data = pickle.load(openfile)
-
-        self.make_plot(doc_embeddings_tokenized_data, clustering_tokenized_data, self.outdir + "/scatterplotscpectralcluster.png")
+        df.to_pickle("spectral_clustering_tdidf.pkl")
 
 
     def get_top_keywords(self, n_terms, clusters, vectorizer, X):
-        """This function returns the keywords for each centroid of the KMeans"""
-        df = pd.DataFrame(X.groupby(clusters).mean())  # groups the TF-IDF vector by cluster
-        terms = vectorizer.get_feature_names_out()  # access tf-idf terms
+        """
+        This function returns the keywords for each centroid of the KMeans and writes this to a file.
 
-        outpath = os.path.join(self.outdir,
-                               "top_keywords.txt")
-        f = open(outpath, "w")
+        :return: nothing
+        :param n_terms: Interger
+        :param clusters: List
+        :param vectorizer: Vectorizer
+        :param X: dataframe
+        """
+
+        # groups the TF-IDF vector by cluster
+        df = pd.DataFrame(X.groupby(clusters).mean())
+        # access tf-idf terms
+        terms = vectorizer.get_feature_names_out()
+
+        f = open(os.path.join(self.outdir,
+                               "top_keywords.txt"), "w")
 
         for i, r in df.iterrows():
             f.write('\nCluster {}'.format(i))
             f.write(','.join([terms[t] for t in np.argsort(r)[-n_terms:]]))
-            # for each row of the dataframe, find the n terms that have the highest tf idf score
         f.close()
-
-    def make_plot(self, vector_data, cluster, outputname):
-        plt.scatter(vector_data[:, 0], vector_data[:, 1], c=cluster.labels_)
-        plt.title("Scatterplot of spectral clustering")
-        plt.savefig(outputname)
-
 
 
     def print_arguments(self):
+        """
+        Arguments are printed in the terminal
+        :return: nothing
+        """
+
         print("Arguments:")
         print("")
 

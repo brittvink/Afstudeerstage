@@ -1,3 +1,13 @@
+"""
+File:         preprocess.py
+Created:      n.v.t
+Last Changed: 2022/06/10
+Author:       B.Vink
+
+This pythonscript is used to preproces data
+
+The data is readed, processed and saved in a dataframe
+"""
 
 import yake
 import argparse
@@ -7,10 +17,10 @@ import logging
 import os
 
 # Metadata
-__program__ = "Pre-Process files to start PICALO"
+__program__ = "pre processing"
 __author__ = "Britt Vink"
 __maintainer__ = "Britt Vink"
-__email__ = "bvink@umcg.nl"
+__email__ = "b.vink@st.hanze.nl"
 __license__ = "GPLv3"
 __version__ = 1.0
 __description__ = "{} is a program developed and maintained by {}. " \
@@ -19,7 +29,6 @@ __description__ = "{} is a program developed and maintained by {}. " \
                   "of any kind.".format(__program__,
                                         __author__,
                                         __license__)
-
 
 
 class main():
@@ -35,6 +44,10 @@ class main():
 
     @staticmethod
     def create_argument_parser():
+        """
+                Creates a argument parser
+                :return:  ArgumentParser
+                                """
         parser = argparse.ArgumentParser(prog=__program__,
                                          description=__description__,
                                          )
@@ -46,10 +59,18 @@ class main():
                                                    __version__),
                             help="show program's version number and exit.")
 
-
         return parser.parse_args()
 
+
     def start(self):
+        """
+        The data is readed as a dataframe. The keywords are extracted using yake!.
+        The keywords are saved to the dataframe the data is also tokenized, and saved to the dataframe.
+        The whole dataframe is saved.
+
+        :return: nothing
+        """
+
         self.print_arguments()
         logging.basicConfig(filename=os.path.join(self.outdir,"logfile_preprocessing.log"),
                             filemode='w',
@@ -62,15 +83,9 @@ class main():
 
         # Take keywords for each post and turn them into a textstring
         sentences = self.extract_keywords(df)
-        logging.info("keywords token")
-
         # Get list keyword sets of all articles
         keyword_sets = [word_tokenize(i) for i in sentences]
         df["keywords"] = keyword_sets
-        df.to_pickle(os.path.join(self.outdir,"df_pickle.pkl"))
-        df = pd.read_pickle(os.path.join(self.outdir,"df_pickle.pkl"))
-        print(df)
-
 
         data_tokenized = [word_tokenize(i) for i in df.cleaned.tolist()]
         df["tokenized"] = data_tokenized
@@ -79,7 +94,12 @@ class main():
 
 
     def extract_keywords(self, df):
-        # Keyword extractor
+        """
+        Keywords are extracted from each row of the dataframe. They are put in the list that is returned
+                 :param df: Dataframe
+       :return: List
+        """
+
         simple_kwextractor = yake.KeywordExtractor()
         sentences = []
         for post in df.cleaned:
@@ -93,6 +113,10 @@ class main():
 
 
     def print_arguments(self):
+        """
+        Arguments are printed in the terminal
+        :return: nothing
+        """
         print("Arguments:")
 
 

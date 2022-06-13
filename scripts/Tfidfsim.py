@@ -1,4 +1,16 @@
 #!/usr/bin/env python
+
+"""
+File:         Tfidfsim.py
+Created:      n.v.t
+Last Changed: 2022/06/10
+Author:       B.Vink
+
+This pythonscript is used to vectorize text data using TF-IDF
+
+The data is readed, vectorized and saved. The similarity between the articles is calculated and saved as well
+"""
+
 import logging
 import pandas as pd
 import argparse
@@ -21,11 +33,11 @@ __description__ = "{} is a program developed and maintained by {}. " \
                                         __author__,
                                         __license__)
 
+
 class main():
     def __init__(self):
         # Get the command line arguments.
         arguments = self.create_argument_parser()
-        self.prefix = getattr(arguments, 'prefix')
 
         # Set variables.
         self.outdir = os.path.join(str(os.path.dirname(os.path.abspath(__file__))), 'TF-IDF')
@@ -35,6 +47,10 @@ class main():
 
     @staticmethod
     def create_argument_parser():
+        """
+                Creates a argument parser
+                :return:  ArgumentParser
+                """
         parser = argparse.ArgumentParser(prog=__program__,
                                          description=__description__,
                                          )
@@ -46,34 +62,29 @@ class main():
                                                    __version__),
                             help="show program's version number and exit.")
 
-        parser.add_argument("-p",
-                            "--prefix",
-                            type=str,
-                            required=True,
-                            help="Prefix for the output file.")
-
         return parser.parse_args()
 
 
     def start(self):
+        """
+        The article is described by a vector using the TfidfVectorizer libray.The dataframe with the vectors is saved.
+        Than a similairy matrix is made determining the similarity between articles based on their vectors. This dataframe is saved as well.
+        This process is done for both keyword data and cleaned data.
 
-        logging.basicConfig(filename=self.outdir + "/{}_logfile.log".format(self.prefix),
+        :return: nothing
+        """
+
+        logging.basicConfig(filename=self.outdir + "/logfile.log",
                             filemode='w',
                             format='%(asctime)s,%(msecs)d %(message)s',
                             datefmt='%H:%M:%S',
                             level=logging.DEBUG)
 
-        logging.info("prefix: " + self.prefix)
-        logging.info("outdir: " + self.outdir)
-
-
         documents = pd.read_pickle("pre_processing/df_preprocessed.pkl")
         documents["keywords_string"] = [' '.join(map(str, l)) for l in documents['keywords']]
-        print(documents)
 
         # use tfidf by removing tokens that don't appear in at least 50 documents
         vect = TfidfVectorizer()
-
         # Fit and transform
         X = vect.fit_transform(documents.cleaned)
 
@@ -81,7 +92,6 @@ class main():
         df.index = documents.index.tolist()
         df.columns = documents.index.tolist()
         df.to_pickle(os.path.join(self.outdir,"tf-idf_cleaned_text.pkl"))
-        print(df)
 
         X = vect.fit_transform(documents.keywords_string)
 
@@ -89,9 +99,6 @@ class main():
         df.index = documents.index.tolist()
         df.columns = documents.index.tolist()
         df.to_pickle(os.path.join(self.outdir, "tf-idf_keywords.pkl"))
-        print(df)
-
-
 
 
 if __name__ == '__main__':

@@ -1,17 +1,27 @@
 #!/usr/bin/env python
+
+"""
+File:         get_interesting_topics_in_cleaned_data.py
+Created:      n.v.t
+Last Changed: 2022/06/10
+Author:       B.Vink
+
+This pythonscript is used to read a text file and put the data in a MySQL Database
+
+The data is given with the input argument (-i).
+The data is readed and put in the database
+"""
+
 import pandas as pd
-import nltk
-from nltk.corpus import stopwords
-import re
-import string
 import os
+
+"""With this script dataframes are made with a selection of RSS feeds"""
 
 outdir = os.path.join(str(os.path.dirname(os.path.abspath(__file__))), 'sentiment')
 if not os.path.exists(outdir):
     os.makedirs(outdir)
 
 df = pd.read_pickle("pre_processing/df_preprocessed.pkl")
-print(df['rss'])
 
 topics_sentiment_food_list = [  "https://www.sciencedaily.com/rss/health_medicine/nutrition.xml",
                                 "https://www.sciencedaily.com/rss/mind_brain/consumer_behavior.xml",
@@ -21,8 +31,8 @@ topics_sentiment_food_list = [  "https://www.sciencedaily.com/rss/health_medicin
                               ]
 
 df_sentiment_food = df.loc[df['rss'].isin(topics_sentiment_food_list)]
-print(df_sentiment_food)
 df_sentiment_food.to_pickle(os.path.join(outdir,"df_sentiment_food.pkl"))
+
 
 topics_sentiment_energy_list = ["https://www.sciencedaily.com/rss/matter_energy/energy_and_resources.xml",
                                 "https://www.sciencedaily.com/rss/matter_energy/energy_policy.xml",
@@ -34,7 +44,6 @@ topics_sentiment_energy_list = ["https://www.sciencedaily.com/rss/matter_energy/
                                 "https://www.sciencedaily.com/rss/strange_offbeat/fossils_ruins.xml"]
 
 df_sentiment_energy = df.loc[df['rss'].isin(topics_sentiment_energy_list)]
-print(df_sentiment_energy)
 df_sentiment_energy.to_pickle(os.path.join(outdir,"df_sentiment_energy.pkl"))
 
 
@@ -128,6 +137,4 @@ topics_kcbbe_list = ["https://www.sciencedaily.com/rss/space_time/solar_system.x
                 "https://www.sciencedaily.com/rss/strange_offbeat/fossils_ruins.xml"]
 
 df_topics_kcbbe = df.loc[df['rss'].isin(topics_kcbbe_list)]
-print(df_topics_kcbbe)
 df_topics_kcbbe.to_pickle(os.path.join(outdir,"df_topics_kcbbe.pkl"))
-

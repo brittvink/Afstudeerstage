@@ -1,22 +1,30 @@
 #!/usr/bin/env python
-import numpy as np
+
+"""
+File:         sentiment.py
+Created:      n.v.t
+Last Changed: 2022/06/10
+Author:       B.Vink
+
+This pythonscript is used to determine the sentiment of articles
+
+The data is given with the dataframe argument (-df).
+The data is readed, the sentiment for each word is calculated. The means of the calculaions is saved in a dataframe.
+The means is also plotted.
+"""
+
 import pandas as pd
 import argparse
 from textblob import TextBlob
-import matplotlib.pyplot as plt
-import math
 import os
-import pickle
 import matplotlib.pyplot as plt
-import seaborn as sns
 import logging
 
-
 # Metadata
-__program__ = "Pre-Process files to start PICALO"
+__program__ = "Sentiment analyse"
 __author__ = "Britt Vink"
 __maintainer__ = "Britt Vink"
-__email__ = "bvink@umcg.nl"
+__email__ = "b.vink@st.hanze.nl"
 __license__ = "GPLv3"
 __version__ = 1.0
 __description__ = "{} is a program developed and maintained by {}. " \
@@ -44,6 +52,10 @@ class main():
 
     @staticmethod
     def create_argument_parser():
+        """
+                Creates a argument parser
+                :return:  ArgumentParser with prefix and dataframe
+                """
         parser = argparse.ArgumentParser(prog=__program__,
                                          description=__description__,
                                          )
@@ -72,6 +84,17 @@ class main():
 
 
     def start(self):
+        """
+        The data is readed as a dataframe.
+        The year column is changes so it is numerical.
+        The polarity and subjectivity is calculated using Textblob, by taking the mean of the values of each word for every article.
+        The values are added as columns to the dataframe.
+        A lineplot of the polarity is made.
+
+                        :return: nothing
+
+        """
+
         self.print_arguments()
 
         logging.basicConfig(filename=os.path.join(self.outdir, "sentiment.log"),
@@ -82,26 +105,46 @@ class main():
 
 
         data = pd.read_pickle(self.df)
-
-
         logging.info(data.shape)
 
+        data = self.get_years(data)
+
+        pol = lambda x: TextBlob(x).sentiment.polarity
+        sub = lambda x: TextBlob(x).sentiment.subjectivity
+
+        data['polarity'] = data['text'].apply(pol)
+        data['subjectivity'] = data['text'].apply(sub)
+
+        self.plot(data, "subjectivity")
+        self.plot(data, "polarity")
+
+        df_2022 = data.loc[data['year'] > 2021]
+        self.plot(df_2022, "subjectivity", True)
+        self.plot(df_2022, "polarity", True)
+
+
+    def get_years(self, data):
+        """
+
+        A column of the dataframe is manipulated to have the year of publication seperated, this value is added to the dataframe.
+                :param data: dataframe
+
+                        :return: dataframe
+
+        """
+
         listyear = []
-        publishedlist = data['published'].tolist()
-        for published in publishedlist:
+        for published in data['published'].tolist():
             published = published.split(" ")
             listyear.append(published[3])
 
         data['year'] = listyear
         data["year"] = data["year"].astype("int")
 
-
         listyear = []
-        publishedlist = data['published'].tolist()
-        for published in publishedlist:
+        for published in data['published'].tolist():
             stringe = ""
             published = published.split(" ")
-            print(published)
             stringe += published[3]
             if published[2] == 'Jan':
                 stringe += "-01-"
@@ -130,33 +173,26 @@ class main():
             stringe += published[1]
             listyear.append(stringe)
 
-
         data['date'] = listyear
         data["date"] = data["date"].astype("datetime64")
-
-        pol = lambda x: TextBlob(x).sentiment.polarity
-        sub = lambda x: TextBlob(x).sentiment.subjectivity
-
-        data['polarity'] = data['text'].apply(pol)
-        data['subjectivity'] = data['text'].apply(sub)
-
-        self.plot(data, "subjectivity")
-        self.plot(data, "polarity")
-
-        df_2022 = data.loc[data['year'] > 2021]
-        print(df_2022)
-        self.plot(df_2022, "subjectivity", True)
-        self.plot(df_2022, "polarity", True)
+        return data
 
 
     def plot(self, data, kind, ingezoomd=False):
+        """
+        A lineplot of the sentiment of the articles is made and saved
+
+        :param data: Dataframe
+        :param kind: String
+        :param ingezoomd: Boolean
+        :return: dataframe
+        """
+
         fig, ax = plt.subplots(figsize=(15, 4))
 
         plt.plot(data['date'].sort_index(), data[kind])
         plt.legend()
         ax.set_ylabel(kind)
-
-        # Get second axis
         ax2 = ax.twinx()
         plt.plot(data['date'].value_counts().sort_index(), color="orange")
         plt.legend()
@@ -168,16 +204,20 @@ class main():
         else:
             plt.title("lineplot of {} in articles".format(kind))
 
-        outpath = os.path.join(self.outdir,
-                               "{}_lineplot_{}_alleen2022_{}.png".format(self.prefix, kind, ingezoomd))
-        plt.savefig(outpath)
+        plt.savefig(os.path.join(self.outdir,
+                               "{}_lineplot_{}_alleen2022_{}.png".format(self.prefix, kind, ingezoomd)))
         plt.close()
 
 
     def print_arguments(self):
-        print("Arguments:")
+        """
+        Arguments are printed in the terminal
+        :return: nothing
+        """
 
+        print("Arguments:")
         print("")
+
 
 if __name__ == '__main__':
     m = main()
